@@ -6,6 +6,7 @@ use kupisa\cli\Files;
 use kupisa\cli\Lint;
 use kupisa\cli\Remote;
 use kupisa\cli\UploadController;
+use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
 
@@ -109,13 +110,22 @@ class DevController extends UploadController
     }
 
     /**
-     * Uploads everything but the broken files, and says so when the upload fails.
+     * Uploads everything but the broken files, and says so when the upload fails or a namespace keeps it
+     * from starting.
      */
     private function upload(Remote $remote): bool
     {
+        try {
+            $client = Files::client();
+        } catch (Exception $exception) {
+            $this->stderr("Nothing is uploaded: {$exception->getMessage()}\n", Console::FG_RED);
+
+            return false;
+        }
+
         Files::touchDirectories();
 
-        [$exitCode, $output] = $remote->upload(Files::directories(), array_keys($this->broken));
+        [$exitCode, $output] = $remote->upload(Files::directories(), $client, array_keys($this->broken));
 
         if ($exitCode !== 0) {
             $this->stderr("The upload failed:\n$output\n", Console::FG_RED);

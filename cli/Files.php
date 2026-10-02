@@ -5,6 +5,7 @@ namespace kupisa\cli;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use yii\console\Exception;
 
 /**
  * The themes and modules of the current directory, the root of a repository, and their files.
@@ -22,6 +23,47 @@ class Files
             ...(glob('themes/*', GLOB_ONLYDIR) ?: []),
             ...(glob('modules/*', GLOB_ONLYDIR) ?: []),
         ];
+    }
+
+    /**
+     * The directory of this repository under `sites/` of the platform, read from the namespaces of its themes
+     * and modules: `template` for `sites\template\themes\demo`, null for `sites\themes\demo`, which lives right
+     * under `sites/`. The platform finds a class by its namespace, so that is where the files have to go,
+     * whatever the directory of the repository is called on this computer.
+     *
+     * @throws Exception When a namespace is not one the platform would find, or two of them name another directory.
+     */
+    public static function client(): string|null
+    {
+        $clients = [];
+
+        foreach (self::directories() as $directory) {
+            [$kind, $name] = explode('/', $directory);
+            $file          = $directory . ($kind === 'themes' ? '/Theme.php' : '/Module.php');
+
+            if (!is_file($file)) {
+                continue;
+            }
+
+            $pattern = '~^namespace\s+sites\\\\(?:(\w+)\\\\)?' . $kind . '\\\\' . $name . '\s*;~m';
+
+            if (!preg_match($pattern, (string) file_get_contents($file), $matches)) {
+                throw new Exception(
+                    "The namespace of $file has to be sites\\$kind\\$name, or sites\\<client>\\$kind\\$name.",
+                );
+            }
+
+            $clients[$matches[1] ?? ''][] = $file;
+        }
+
+        if (count($clients) > 1) {
+            throw new Exception(
+                'The themes and modules of a repository share one namespace, and these differ: '
+                . implode(', ', array_merge(...array_values($clients))) . '.',
+            );
+        }
+
+        return (string) array_key_first($clients) ?: null;
     }
 
     /**

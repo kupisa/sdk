@@ -42,6 +42,10 @@ and by the AI assistant, never loaded.
 - `push` and `dev` take `--site=<host>` to work on another connected site without selecting it.
 - A PHP file with a syntax error is never uploaded: `push` uploads nothing until it is fixed, `dev` leaves the
   file as the site has it and says why.
+- The files go where their namespace says: a repository whose classes are `sites\themes\<name>\Theme` lands
+  right in the `sites/` directory of the platform, one with `sites\acme\themes\<name>\Theme` in `sites/acme/`,
+  whatever its directory is called on your computer. A theme or a module with any other namespace stops the
+  upload.
 - Only the themes and modules of the repository are touched on the server. One deleted from the repository as
   a whole stays there.
 - The connected sites are kept in `.kupisa.json`, which belongs to your computer and stays out of git.

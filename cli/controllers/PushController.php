@@ -33,6 +33,7 @@ class PushController extends UploadController
             return ExitCode::OK;
         }
 
+        $client = Files::client();
         $errors = Lint::errors(array_keys(Files::all()));
 
         if ($errors !== []) {
@@ -42,11 +43,11 @@ class PushController extends UploadController
             return ExitCode::DATAERR;
         }
 
-        $this->stdout("Uploading to {$remote->host}\n", Console::BOLD);
+        $this->stdout("Uploading to {$remote->host}, sites/" . ($client === null ? '' : "$client/") . "\n", Console::BOLD);
 
         Files::touchDirectories();
 
-        [$exitCode, $output] = $remote->upload($directories, verbose: true);
+        [$exitCode, $output] = $remote->upload($directories, $client, verbose: true);
 
         if ($exitCode !== 0) {
             $this->stderr("The upload failed:\n$output\n", Console::FG_RED);

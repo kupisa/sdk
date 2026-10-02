@@ -4,7 +4,7 @@ namespace kupisa\cli;
 
 /**
  * The server of a site, reached with rsync over SSH. Every site is reached as the same user, and the server
- * ties the key to the directory of the repository, so no path on the server is ever named here.
+ * ties the key to the `sites/` directory of the platform, so no path outside it can be reached.
  */
 class Remote
 {
@@ -55,12 +55,13 @@ class Remote
      * changed is uploaded, what is no longer here is deleted there. Only the directories named are touched;
      * whatever else the server keeps next to them (a theme of another repository) stays as it is.
      *
-     * @param string[] $directories The themes and modules to upload, as `themes/<name>` and `modules/<name>`.
-     * @param string[] $skip        The files left as the server has them, by their path from the current directory.
-     * @param bool     $verbose     Whether rsync lists what it uploads and deletes.
+     * @param string[]    $directories The themes and modules to upload, as `themes/<name>` and `modules/<name>`.
+     * @param string|null $client      The directory under `sites/` they go into, null for `sites/` itself.
+     * @param string[]    $skip        The files left as the server has them, by their path from the current directory.
+     * @param bool        $verbose     Whether rsync lists what it uploads and deletes.
      * @return array{int, string} The exit code and everything rsync wrote.
      */
-    public function upload(array $directories, array $skip = [], bool $verbose = false): array
+    public function upload(array $directories, string|null $client, array $skip = [], bool $verbose = false): array
     {
         $filters = ['--exclude=.DS_Store'];
 
@@ -82,16 +83,17 @@ class Remote
             '--delete',
             ...$filters,
             './',
-            $this->target(),
+            $this->target($client),
         ]);
     }
 
     /**
-     * The directory of the repository on the server, as rsync names it.
+     * Where rsync writes on the server: the `sites/` directory of the platform, which the server ties the key
+     * to, or the directory of a client in it.
      */
-    private function target(): string
+    private function target(string|null $client = null): string
     {
-        return self::USER . '@' . $this->host . ':.';
+        return self::USER . '@' . $this->host . ':' . ($client === null ? '.' : "$client/");
     }
 
     /**
