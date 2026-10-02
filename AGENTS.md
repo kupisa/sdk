@@ -27,7 +27,7 @@ may build on is in the SDK, in the directory of this file:
 - A theme lives in `themes/<name>/` of this repository, with a `Theme` class in it. Modules (`modules/<name>/`)
   are not covered by the SDK yet.
 - The namespace of a class is its path from the `sites` directory of the platform, which this repository is
-  cloned into. The `CLAUDE.md` of this repository names the prefix: with the prefix `sites\acme`, the theme
+  cloned into. The `AGENTS.md` of this repository names the prefix: with the prefix `sites\acme`, the theme
   `paris` is `sites\acme\themes\paris\Theme` in `themes/paris/Theme.php`.
 - The name of a theme is the name of its directory: lowercase letters and digits only, and unique on the whole
   server. It may not be the name of a theme or a module of the platform (`default`, `starter`, `dental`,
