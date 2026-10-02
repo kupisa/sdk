@@ -31,13 +31,21 @@ class Remote
     }
 
     /**
-     * Tries the connection by listing the directory of the repository on the server.
+     * Tries the connection by uploading an empty directory as a dry run, which writes nothing on the server.
+     * (Listing the directory would be simpler, but the rsync of macOS asks for a listing with `--dirs`, which
+     * the server refuses.)
      *
      * @return string|null What rsync answered when it failed, null when the server let the key in.
      */
     public function check(): string|null
     {
-        [$exitCode, $output] = $this->rsync(['--list-only', $this->target()]);
+        $empty = sys_get_temp_dir() . '/kupisa-' . uniqid();
+
+        mkdir($empty);
+
+        [$exitCode, $output] = $this->rsync(['--dry-run', "$empty/", $this->target()]);
+
+        rmdir($empty);
 
         return $exitCode === 0 ? null : trim($output);
     }
@@ -47,7 +55,7 @@ class Remote
      */
     private function target(): string
     {
-        return self::USER . '@' . $this->host . ':';
+        return self::USER . '@' . $this->host . ':.';
     }
 
     /**
@@ -67,7 +75,8 @@ class Remote
     }
 
     /**
-     * Runs rsync with the arguments given.
+     * Runs rsync with the arguments given, going through directories with `--recursive` and never with
+     * `--dirs`, which the server refuses from the rsync of macOS.
      *
      * @param string[] $arguments
      * @return array{int, string} The exit code and everything rsync wrote.
@@ -75,7 +84,7 @@ class Remote
     private function rsync(array $arguments): array
     {
         $pipes   = [];
-        $command = ['rsync', '-e', $this->ssh(), ...$arguments];
+        $command = ['rsync', '-e', $this->ssh(), '--recursive', '--no-dirs', ...$arguments];
         $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['redirect', 1]], $pipes);
 
         if ($process === false) {
