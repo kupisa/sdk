@@ -6,5 +6,13 @@
     "require": {
         "php": ">=8.4",
         "yiisoft/yii2": "~2.0.54"
-    }
+    },
+    "autoload": {
+        "psr-4": {
+            "kupisa\\cli\\": "cli/"
+        }
+    },
+    "bin": [
+        "bin/kupisa"
+    ]
 }

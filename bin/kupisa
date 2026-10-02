@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * The command line tool of the Kupiša SDK, run from the root of a repository of themes and modules as
+ * `vendor/bin/kupisa <command>`. Its commands are the controllers in `cli/controllers/`.
+ */
+
+$autoload = $_composer_autoload_path ?? __DIR__ . '/../../../autoload.php';
+
+require $autoload;
+require dirname($autoload) . '/yiisoft/yii2/Yii.php';
+
+$application = new yii\console\Application(require __DIR__ . '/../cli/config/main.php');
+
+exit($application->run());
