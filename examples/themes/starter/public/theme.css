@@ -1,0 +1,53 @@
+/*
+ * The starter theme: other values for the design tokens of the site (see apps/frontend/public/css/src/_tokens.scss)
+ * and the styles of what the theme adds. The stylesheet of the site loads first, this one after it, so it only
+ * has to say what it changes.
+ */
+:root {
+    --color-primary: #b45309;
+    --color-primary-hover: #92400e;
+    --color-secondary: #57534e;
+    --color-secondary-hover: #44403c;
+
+    --color-text: #292524;
+    --color-text-muted: #78716c;
+    --color-heading: #1c1917;
+
+    --color-background: #fffbf5;
+    --color-surface: #fef3e2;
+    --color-border: #e7e5e4;
+
+    --font-heading: Georgia, "Times New Roman", serif;
+    --heading-weight: 600;
+
+    --radius: 0.25rem;
+    --radius-lg: 0.5rem;
+}
+
+/* The banner block of the theme: one line of text on the accent colour, across the width of the page. */
+.block-banner {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    text-align: center;
+}
+
+.block-banner p {
+    margin: 0;
+    padding: var(--space-2) 0;
+    font-size: var(--text-sm);
+}
+
+.block-banner a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* The line above the title of the hero, which the view of the hero of the theme adds. */
+.block-hero-kicker {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--heading-weight);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}

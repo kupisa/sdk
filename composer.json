@@ -1,0 +1,10 @@
+{
+    "name": "kupisa/sdk",
+    "description": "What a theme of the Kupiša platform is built with: the stubs of its public classes, the views a theme replaces, an example theme and the guides, for developers and their AI assistants.",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=8.4",
+        "yiisoft/yii2": "~2.0.54"
+    }
+}

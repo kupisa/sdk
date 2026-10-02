@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 823" width="1440" height="823">
+    <!-- A sketch of a page in the starter theme: the banner, the header, a hero with an amber button, three features. -->
+    <rect width="1440" height="823" fill="#fffbf5"/>
+    <rect x="0" y="0" width="1440" height="36" fill="#b45309"/>
+    <rect x="590" y="13" width="260" height="10" rx="3" fill="#fffbf5"/>
+    <rect x="160" y="65" width="140" height="20" rx="4" fill="#1c1917"/>
+    <rect x="960" y="69" width="60" height="12" rx="3" fill="#78716c"/>
+    <rect x="1040" y="69" width="60" height="12" rx="3" fill="#78716c"/>
+    <rect x="1120" y="69" width="60" height="12" rx="3" fill="#78716c"/>
+    <rect x="1200" y="69" width="80" height="12" rx="3" fill="#78716c"/>
+    <rect x="0" y="114" width="1440" height="1" fill="#e7e5e4"/>
+    <rect x="160" y="220" width="160" height="12" rx="3" fill="#b45309"/>
+    <rect x="160" y="250" width="480" height="44" rx="3" fill="#1c1917"/>
+    <rect x="160" y="306" width="360" height="44" rx="3" fill="#1c1917"/>
+    <rect x="160" y="380" width="460" height="16" rx="3" fill="#78716c"/>
+    <rect x="160" y="408" width="400" height="16" rx="3" fill="#78716c"/>
+    <rect x="160" y="460" width="170" height="52" rx="4" fill="#b45309"/>
+    <rect x="720" y="186" width="560" height="360" rx="8" fill="#fef3e2" stroke="#e7e5e4"/>
+    <rect x="160" y="630" width="280" height="28" rx="3" fill="#1c1917"/>
+    <rect x="160" y="694" width="360" height="220" rx="8" fill="#fef3e2" stroke="#e7e5e4"/>
+    <rect x="540" y="694" width="360" height="220" rx="8" fill="#fef3e2" stroke="#e7e5e4"/>
+    <rect x="920" y="694" width="360" height="220" rx="8" fill="#fef3e2" stroke="#e7e5e4"/>
+</svg>

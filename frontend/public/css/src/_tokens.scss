@@ -1,0 +1,74 @@
+// The design tokens of the site: every colour, font and size the stylesheet uses, as custom properties on the
+// root element. They are the surface a theme and the appearance settings of a site work on (a theme sets them
+// in its own stylesheet, the settings in an inline style in the head of the page), so the rest of the
+// stylesheet never names a value of its own.
+
+:root {
+    // Colours: the two colours a site picks, the text and the surfaces, and the colours of the states.
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-contrast: #ffffff;
+    --color-secondary: #475569;
+    --color-secondary-hover: #334155;
+    --color-secondary-contrast: #ffffff;
+
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-heading: #111827;
+    --color-link: var(--color-primary);
+    --color-link-hover: var(--color-primary-hover);
+
+    --color-background: #ffffff;
+    --color-surface: #f8fafc;
+    --color-border: #e5e7eb;
+    --color-focus: color-mix(in srgb, var(--color-primary) 35%, transparent);
+
+    --color-success: #15803d;
+    --color-success-subtle: #dcfce7;
+    --color-danger: #b91c1c;
+    --color-danger-subtle: #fee2e2;
+    --color-warning: #a16207;
+    --color-warning-subtle: #fef9c3;
+    --color-info: #0369a1;
+    --color-info-subtle: #e0f2fe;
+
+    // Type: the body and the headings may use different faces; the sizes are a scale around the body size.
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-heading: var(--font-body);
+    --font-monospace: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --font-size: 1rem;
+    --line-height: 1.6;
+    --heading-line-height: 1.2;
+    --heading-weight: 700;
+
+    --text-sm: 0.875rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+
+    // Space: the scale the spacing utilities (`mt-3`, `py-5`) and the components step through.
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 3rem;
+
+    // Layout: the width of the content, its padding at the edges of the screen and the gap of the grid.
+    --container-width: 72rem;
+    --container-padding: 1rem;
+    --grid-gap: 1.5rem;
+
+    // Shapes: the corners of buttons, inputs, cards and pictures, and the shadow of what floats.
+    --radius-sm: 0.25rem;
+    --radius: 0.5rem;
+    --radius-lg: 1rem;
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+
+    // What lies over the page behind a picture shown on its own (the lightbox), and the colour of what stands
+    // on it (its buttons).
+    --overlay: rgba(0, 0, 0, 0.9);
+    --overlay-contrast: #ffffff;
+}
