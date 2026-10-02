@@ -57,5 +57,7 @@ may build on is in the SDK, in the directory of this file:
 
 - `vendor/bin/phpstan` checks the code against the stubs: a call to something the platform does not offer
   fails. Run it after every change and leave it without errors.
-- The theme itself is seen on a site of the platform once it is deployed; you cannot run it here. Say what you
+- The theme itself is seen on a site of the platform once it is uploaded; you cannot run it here. Say what you
   could not check.
+- Uploading is the developer's to do, with `vendor/bin/kupisa push` or `vendor/bin/kupisa dev` (see the
+  `README.md` of the SDK). Never run them unless you are asked to: they change a site right away.

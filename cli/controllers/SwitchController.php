@@ -60,10 +60,10 @@ class SwitchController extends Controller
             'validator' => function (string $input, string|null &$error) use ($hosts): bool {
                 $error = 'Type the number of a site.';
 
-                return ctype_digit($input) && isset($hosts[$input - 1]);
+                return ctype_digit($input) && isset($hosts[(int) $input - 1]);
             },
         ]);
 
-        return $hosts[$number - 1];
+        return $hosts[(int) $number - 1];
     }
 }

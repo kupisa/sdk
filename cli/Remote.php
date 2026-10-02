@@ -51,6 +51,42 @@ class Remote
     }
 
     /**
+     * Makes the themes and modules on the server the same as those of the current directory: what is new or
+     * changed is uploaded, what is no longer here is deleted there. Only the directories named are touched;
+     * whatever else the server keeps next to them (a theme of another repository) stays as it is.
+     *
+     * @param string[] $directories The themes and modules to upload, as `themes/<name>` and `modules/<name>`.
+     * @param string[] $skip        The files left as the server has them, by their path from the current directory.
+     * @param bool     $verbose     Whether rsync lists what it uploads and deletes.
+     * @return array{int, string} The exit code and everything rsync wrote.
+     */
+    public function upload(array $directories, array $skip = [], bool $verbose = false): array
+    {
+        $filters = ['--exclude=.DS_Store'];
+
+        foreach ($skip as $path) {
+            $filters[] = "--exclude=/$path";
+        }
+
+        foreach ($directories as $directory) {
+            $filters[] = '--include=/' . dirname($directory) . '/';
+            $filters[] = "--include=/$directory/";
+            $filters[] = "--include=/$directory/**";
+        }
+
+        $filters[] = '--exclude=*';
+
+        return $this->rsync([
+            ...($verbose ? ['--verbose'] : []),
+            '--times',
+            '--delete',
+            ...$filters,
+            './',
+            $this->target(),
+        ]);
+    }
+
+    /**
      * The directory of the repository on the server, as rsync names it.
      */
     private function target(): string
@@ -83,18 +119,6 @@ class Remote
      */
     private function rsync(array $arguments): array
     {
-        $pipes   = [];
-        $command = ['rsync', '-e', $this->ssh(), '--recursive', '--no-dirs', ...$arguments];
-        $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['redirect', 1]], $pipes);
-
-        if ($process === false) {
-            return [1, 'rsync could not be started. Is it installed?'];
-        }
-
-        $output = (string) stream_get_contents($pipes[1]);
-
-        fclose($pipes[1]);
-
-        return [proc_close($process), $output];
+        return Process::run(['rsync', '-e', $this->ssh(), '--recursive', '--no-dirs', ...$arguments]);
     }
 }
