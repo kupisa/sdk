@@ -6,7 +6,6 @@ use kupisa\cli\Files;
 use kupisa\cli\Lint;
 use kupisa\cli\Remote;
 use kupisa\cli\UploadController;
-use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
 
@@ -23,8 +22,8 @@ class DevController extends UploadController
 
     /**
      * Uploads everything once, then every file as soon as it is saved, and deletes on the site what is deleted
-     * here, until it is stopped with Ctrl+C. A PHP file with a syntax error is not uploaded: the site keeps
-     * the one it has until the error is fixed.
+     * here, a whole theme or module too, until it is stopped with Ctrl+C. A PHP file with a syntax error is
+     * not uploaded: the site keeps the one it has until the error is fixed.
      */
     public function actionIndex(): int
     {
@@ -34,19 +33,22 @@ class DevController extends UploadController
             return ExitCode::USAGE;
         }
 
-        $this->stdout("Uploading to {$remote->host}\n", Console::BOLD);
+        $client    = Files::client();
+        $directory = $client === null ? '' : "$client/";
+
+        $this->stdout("Uploading to {$remote->host}, sites/$directory\n", Console::BOLD);
 
         $files        = Files::all();
         $this->broken = Lint::errors(array_keys($files));
 
         $this->reportErrors($this->broken);
 
-        if (!$this->upload($remote)) {
+        if (!$this->upload($remote, $client)) {
             return ExitCode::UNAVAILABLE;
         }
 
         $this->stdout("Watching themes/ and modules/. Press Ctrl+C to stop.\n\n");
-        $this->watch($remote, $files);
+        $this->watch($remote, $client, $files);
     }
 
     /**
@@ -54,7 +56,7 @@ class DevController extends UploadController
      *
      * @param array<string, string> $files The files as they were uploaded last (see `Files::all()`).
      */
-    private function watch(Remote $remote, array $files): never
+    private function watch(Remote $remote, string|null $client, array $files): never
     {
         while (true) {
             usleep(self::INTERVAL);
@@ -67,7 +69,7 @@ class DevController extends UploadController
             if ($changed !== [] || $deleted !== []) {
                 $this->check($changed, $deleted);
                 $this->report($changed, $deleted);
-                $this->upload($remote);
+                $this->upload($remote, $client);
             }
         }
     }
@@ -110,22 +112,22 @@ class DevController extends UploadController
     }
 
     /**
-     * Uploads everything but the broken files, and says so when the upload fails or a namespace keeps it
-     * from starting.
+     * Uploads everything but the broken files, and says so when the upload fails or a theme or module has a
+     * namespace the site would not find.
      */
-    private function upload(Remote $remote): bool
+    private function upload(Remote $remote, string|null $client): bool
     {
-        try {
-            $client = Files::client();
-        } catch (Exception $exception) {
-            $this->stderr("Nothing is uploaded: {$exception->getMessage()}\n", Console::FG_RED);
+        $misplaced = Files::misplaced();
+
+        if ($misplaced !== null) {
+            $this->stderr("Nothing is uploaded. $misplaced\n", Console::FG_RED);
 
             return false;
         }
 
         Files::touchDirectories();
 
-        [$exitCode, $output] = $remote->upload(Files::directories(), $client, array_keys($this->broken));
+        [$exitCode, $output] = $remote->upload($client, array_keys($this->broken));
 
         if ($exitCode !== 0) {
             $this->stderr("The upload failed:\n$output\n", Console::FG_RED);

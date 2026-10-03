@@ -14,8 +14,9 @@ use yii\helpers\Console;
 class PushController extends UploadController
 {
     /**
-     * Makes the themes and modules on the site the same as here: uploads what is new or changed and deletes
-     * what is no longer here. Nothing is uploaded while a PHP file has a syntax error.
+     * Makes `themes/` and `modules/` on the site the same as here: uploads what is new or changed and deletes
+     * what is no longer here, a whole theme or module too. Nothing is uploaded while a PHP file has a syntax
+     * error or a theme or module has a namespace the site would not find.
      */
     public function actionIndex(): int
     {
@@ -25,12 +26,18 @@ class PushController extends UploadController
             return ExitCode::USAGE;
         }
 
-        $directories = Files::directories();
-
-        if ($directories === []) {
-            $this->stdout("There is no theme or module to upload.\n");
+        if (Files::kinds() === []) {
+            $this->stdout("There is no themes/ or modules/ directory to upload.\n");
 
             return ExitCode::OK;
+        }
+
+        $misplaced = Files::misplaced();
+
+        if ($misplaced !== null) {
+            $this->stderr("Nothing was uploaded. $misplaced\n", Console::FG_RED);
+
+            return ExitCode::DATAERR;
         }
 
         $client = Files::client();
@@ -43,11 +50,13 @@ class PushController extends UploadController
             return ExitCode::DATAERR;
         }
 
-        $this->stdout("Uploading to {$remote->host}, sites/" . ($client === null ? '' : "$client/") . "\n", Console::BOLD);
+        $directory = $client === null ? '' : "$client/";
+
+        $this->stdout("Uploading to {$remote->host}, sites/$directory\n", Console::BOLD);
 
         Files::touchDirectories();
 
-        [$exitCode, $output] = $remote->upload($directories, $client, verbose: true);
+        [$exitCode, $output] = $remote->upload($client, verbose: true);
 
         if ($exitCode !== 0) {
             $this->stderr("The upload failed:\n$output\n", Console::FG_RED);

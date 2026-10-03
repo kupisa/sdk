@@ -42,12 +42,15 @@ and by the AI assistant, never loaded.
 - `push` and `dev` take `--site=<host>` to work on another connected site without selecting it.
 - A PHP file with a syntax error is never uploaded: `push` uploads nothing until it is fixed, `dev` leaves the
   file as the site has it and says why.
-- The files go where their namespace says: a repository whose classes are `sites\themes\<name>\Theme` lands
-  right in the `sites/` directory of the platform, one with `sites\acme\themes\<name>\Theme` in `sites/acme/`,
-  whatever its directory is called on your computer. A theme or a module with any other namespace stops the
-  upload.
-- Only the themes and modules of the repository are touched on the server. One deleted from the repository as
-  a whole stays there.
+- `themes/` and `modules/` of the repository are mirrored on the server, under the directory of the repository
+  in the `sites/` directory of the platform: the repository in `.../sites/template` on your computer has its
+  `themes/` in `sites/template/themes/` on the server, and the same for `modules/`. The name of the directory
+  of the repository is what counts, so it has to be the one its namespace names (`sites\template\themes\demo`
+  for `themes/demo` of `template`); a theme or a module with another namespace stops the upload, since the site
+  would not find it. A repository whose directory is `sites` itself lands right in `sites/`.
+- A mirror means the repository is the truth: what is deleted here is deleted there, a whole theme or module
+  too. Nothing else in the directory of the repository on the server is touched, and nothing outside it is
+  reached.
 - The connected sites are kept in `.kupisa.json`, which belongs to your computer and stays out of git.
 - A server lets you in once we have added your public SSH key to it; `connect` shows the key to send us.
 - It needs PHP and `rsync` on your computer. To type `kupisa` alone, add

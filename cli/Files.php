@@ -5,69 +5,61 @@ namespace kupisa\cli;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use yii\console\Exception;
 
 /**
- * The themes and modules of the current directory, the root of a repository, and their files.
+ * The `themes/` and `modules/` of the current directory, the root of a repository, and their files.
  */
 class Files
 {
-    /**
-     * The directories of the themes and modules, as `themes/<name>` and `modules/<name>`.
-     *
-     * @return string[]
-     */
-    public static function directories(): array
-    {
-        return [
-            ...(glob('themes/*', GLOB_ONLYDIR) ?: []),
-            ...(glob('modules/*', GLOB_ONLYDIR) ?: []),
-        ];
-    }
+    /** The directories a repository keeps its themes and modules in, mirrored on the server. */
+    public const KINDS = ['themes', 'modules'];
 
     /**
-     * The directory of this repository under `sites/` of the platform, read from the namespaces of its themes
-     * and modules: `template` for `sites\template\themes\demo`, null for `sites\themes\demo`, which lives right
-     * under `sites/`. The platform finds a class by its namespace, so that is where the files have to go,
-     * whatever the directory of the repository is called on this computer.
-     *
-     * @throws Exception When a namespace is not one the platform would find, or two of them name another directory.
+     * The directory of the repository under `sites/` of the platform: the name of its directory on this
+     * computer (`template` for `.../sites/template`), so `themes/` lands in `sites/template/themes/`; null
+     * for a repository whose directory is `sites` itself, which lands right in `sites/`.
      */
     public static function client(): string|null
     {
-        $clients = [];
+        $name = basename((string) getcwd());
 
-        foreach (self::directories() as $directory) {
-            [$kind, $name] = explode('/', $directory);
-            $file          = $directory . ($kind === 'themes' ? '/Theme.php' : '/Module.php');
-
-            if (!is_file($file)) {
-                continue;
-            }
-
-            $pattern = '~^namespace\s+sites\\\\(?:(\w+)\\\\)?' . $kind . '\\\\' . $name . '\s*;~m';
-
-            if (!preg_match($pattern, (string) file_get_contents($file), $matches)) {
-                throw new Exception(
-                    "The namespace of $file has to be sites\\$kind\\$name, or sites\\<client>\\$kind\\$name.",
-                );
-            }
-
-            $clients[$matches[1] ?? ''][] = $file;
-        }
-
-        if (count($clients) > 1) {
-            throw new Exception(
-                'The themes and modules of a repository share one namespace, and these differ: '
-                . implode(', ', array_merge(...array_values($clients))) . '.',
-            );
-        }
-
-        return (string) array_key_first($clients) ?: null;
+        return $name === 'sites' ? null : $name;
     }
 
     /**
-     * Every file of the themes and modules with what tells a change of it: the time it was written and its size.
+     * The theme or module whose namespace does not match where the upload puts it, or null when they all do.
+     * The platform finds a class by its namespace, so a theme in `themes/demo` of the repository `template`
+     * has to be `sites\template\themes\demo\Theme`; with any other namespace it would be left out on the site.
+     *
+     * @return string|null The file and the namespace it has to declare.
+     */
+    public static function misplaced(): string|null
+    {
+        $client = self::client();
+
+        foreach (self::KINDS as $kind) {
+            foreach (glob("$kind/*/", GLOB_ONLYDIR) ?: [] as $directory) {
+                $name      = basename($directory);
+                $file      = $directory . ($kind === 'themes' ? 'Theme.php' : 'Module.php');
+                $namespace = 'sites\\' . ($client === null ? '' : "$client\\") . "$kind\\$name";
+
+                if (!is_file($file)) {
+                    continue;
+                }
+
+                $pattern = '~^namespace\s+' . preg_quote($namespace, '~') . '\s*;~m';
+
+                if (!preg_match($pattern, (string) file_get_contents($file))) {
+                    return "$file has to declare the namespace $namespace.";
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Every file of `themes/` and `modules/` with what tells a change of it: the time it was written and its size.
      *
      * @return array<string, string> The time and size by the path of the file from the current directory.
      */
@@ -77,7 +69,7 @@ class Files
 
         $files = [];
 
-        foreach (self::directories() as $directory) {
+        foreach (self::kinds() as $directory) {
             foreach (self::iterate($directory) as $path => $file) {
                 if ($file->isFile() && $file->getFilename() !== '.DS_Store') {
                     $files[str_replace('\\', '/', $path)] = $file->getMTime() . ':' . $file->getSize();
@@ -97,7 +89,7 @@ class Files
     {
         clearstatcache();
 
-        foreach (self::directories() as $directory) {
+        foreach (self::kinds() as $directory) {
             // The directories come after what they hold, so each one already knows the times below it.
             $times = [];
 
@@ -112,6 +104,16 @@ class Files
                 $times[$parent] = max($times[$parent] ?? 0, $time);
             }
         }
+    }
+
+    /**
+     * The directories of `KINDS` the repository has.
+     *
+     * @return string[]
+     */
+    public static function kinds(): array
+    {
+        return array_filter(self::KINDS, 'is_dir');
     }
 
     /**

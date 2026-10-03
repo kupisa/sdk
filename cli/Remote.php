@@ -51,17 +51,16 @@ class Remote
     }
 
     /**
-     * Makes the themes and modules on the server the same as those of the current directory: what is new or
-     * changed is uploaded, what is no longer here is deleted there. Only the directories named are touched;
-     * whatever else the server keeps next to them (a theme of another repository) stays as it is.
+     * Makes `themes/` and `modules/` on the server the same as those of the current directory: what is new or
+     * changed is uploaded, what is no longer here is deleted there, a whole theme or module too. They are the
+     * only thing touched in the directory of the repository on the server, and nothing outside it is reached.
      *
-     * @param string[]    $directories The themes and modules to upload, as `themes/<name>` and `modules/<name>`.
-     * @param string|null $client      The directory under `sites/` they go into, null for `sites/` itself.
-     * @param string[]    $skip        The files left as the server has them, by their path from the current directory.
-     * @param bool        $verbose     Whether rsync lists what it uploads and deletes.
+     * @param string|null $client  The directory under `sites/` the repository is, null for `sites/` itself.
+     * @param string[]    $skip    The files left as the server has them, by their path from the current directory.
+     * @param bool        $verbose Whether rsync lists what it uploads and deletes.
      * @return array{int, string} The exit code and everything rsync wrote.
      */
-    public function upload(array $directories, string|null $client, array $skip = [], bool $verbose = false): array
+    public function upload(string|null $client, array $skip = [], bool $verbose = false): array
     {
         $filters = ['--exclude=.DS_Store'];
 
@@ -69,10 +68,9 @@ class Remote
             $filters[] = "--exclude=/$path";
         }
 
-        foreach ($directories as $directory) {
-            $filters[] = '--include=/' . dirname($directory) . '/';
-            $filters[] = "--include=/$directory/";
-            $filters[] = "--include=/$directory/**";
+        foreach (Files::KINDS as $kind) {
+            $filters[] = "--include=/$kind/";
+            $filters[] = "--include=/$kind/**";
         }
 
         $filters[] = '--exclude=*';
