@@ -37,7 +37,7 @@ and by the AI assistant, never loaded.
 | `kupisa switch [<host>]` | Selects another connected site: the one named, or one of the list it shows. |
 | `kupisa disconnect <host>` | Forgets a connected site. |
 | `kupisa push` | Makes the themes and modules on the selected site the same as in the repository, once: uploads what is new or changed, deletes what is gone. |
-| `kupisa dev` | Does the same, then watches the files and uploads every change as soon as it is saved, until Ctrl+C. |
+| `kupisa dev` | Does the same, then watches the files and uploads every change as soon as it is saved, until Ctrl+C. Open `https://<site>/dev/on` in your browser, logged in, and the page reloads on every change (`/dev/off` stops that). |
 
 - `push` and `dev` take `--site=<host>` to work on another connected site without selecting it.
 - A PHP file with a syntax error is never uploaded: `push` uploads nothing until it is fixed, `dev` leaves the

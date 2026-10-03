@@ -47,7 +47,8 @@ class DevController extends UploadController
             return ExitCode::UNAVAILABLE;
         }
 
-        $this->stdout("Watching themes/ and modules/. Press Ctrl+C to stop.\n\n");
+        $this->stdout("Watching themes/ and modules/. Press Ctrl+C to stop.\n");
+        $this->stdout("Open https://{$remote->host}/dev/on to have the page reload on every change.\n\n");
         $this->watch($remote, $client, $files);
     }
 
