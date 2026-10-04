@@ -14,6 +14,12 @@ class Files
     /** The directories a repository keeps its themes and modules in, mirrored on the server. */
     public const KINDS = ['themes', 'modules'];
 
+    /** The directory a repository keeps the content of its site in, as a package of files. */
+    public const CONTENT = 'content';
+
+    /** What a package of content is made of, in that directory; anything else there is the repository's own. */
+    public const CONTENT_PARTS = ['pages', 'menus', 'terms', 'media', 'media.json', 'site.json'];
+
     /**
      * The directory of the repository under `sites/` of the platform: the name of its directory on this
      * computer (`template` for `.../sites/template`), so `themes/` lands in `sites/template/themes/`; null

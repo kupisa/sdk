@@ -29,4 +29,26 @@ class Process
 
         return [proc_close($process), $output];
     }
+
+    /**
+     * Runs a command that writes for the person at the terminal: what it writes is shown as it comes. With a
+     * file, what it writes to its output goes there in place of the terminal, and only its errors are shown.
+     *
+     * @param string[] $command
+     * @return int The exit code.
+     */
+    public static function show(array $command, string|null $file = null): int
+    {
+        $pipes   = [];
+        $output  = $file === null ? STDOUT : ['file', $file, 'w'];
+        $process = proc_open($command, [1 => $output, 2 => STDERR], $pipes);
+
+        if ($process === false) {
+            fwrite(STDERR, "$command[0] could not be started. Is it installed?\n");
+
+            return 1;
+        }
+
+        return proc_close($process);
+    }
 }

@@ -4,11 +4,20 @@ namespace kupisa\cli;
 
 /**
  * The server of a site, reached with rsync over SSH. Every site is reached as the same user, and the server
- * ties the key to the `sites/` directory of the platform, so no path outside it can be reached.
+ * ties the key to the `sites/` directory of the platform, so no path outside it can be reached, and to the two
+ * commands that import and export the content of a site.
  */
 class Remote
 {
     public const USER = 'kupisa';
+
+    /** How SSH connects: this key only, never asking anything, a new server trusted the first time it is seen. */
+    private const SSH_OPTIONS = [
+        '-o', 'IdentitiesOnly=yes',
+        '-o', 'BatchMode=yes',
+        '-o', 'ConnectTimeout=10',
+        '-o', 'StrictHostKeyChecking=accept-new',
+    ];
 
     /**
      * @param string $host The host name of the site, which is the address of its server too.
@@ -86,6 +95,48 @@ class Remote
     }
 
     /**
+     * Makes `content/` on the server the same as the one of the current directory, like {@see upload()} does
+     * with the themes and modules, which it leaves alone.
+     *
+     * @param string|null $client The directory under `sites/` the repository is, null for `sites/` itself.
+     * @return array{int, string} The exit code and everything rsync wrote.
+     */
+    public function uploadContent(string|null $client): array
+    {
+        return $this->rsync([
+            '--times',
+            '--delete',
+            '--exclude=.DS_Store',
+            '--include=/' . Files::CONTENT . '/',
+            '--include=/' . Files::CONTENT . '/**',
+            '--exclude=*',
+            './',
+            $this->target($client),
+        ]);
+    }
+
+    /**
+     * Imports the content uploaded with {@see uploadContent()} into the site, and shows what the site answers.
+     *
+     * @param string[] $options `--delete`, `--dry-run`.
+     * @return int The exit code of the import.
+     */
+    public function importContent(string|null $client, array $options): int
+    {
+        return Process::show([...$this->sshCommand(), 'content', 'import', $this->host, $client ?? '.', ...$options]);
+    }
+
+    /**
+     * Writes the content of the site into a file, as a tar, and shows what the site left out of it.
+     *
+     * @return int The exit code of the export.
+     */
+    public function exportContent(string $file): int
+    {
+        return Process::show([...$this->sshCommand(), 'content', 'export', $this->host], $file);
+    }
+
+    /**
      * Where rsync writes on the server: the `sites/` directory of the platform, which the server ties the key
      * to, or the directory of a client in it.
      */
@@ -106,8 +157,17 @@ class Remote
             $key = escapeshellarg($key);
         }
 
-        return "ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=10"
-            . ' -o StrictHostKeyChecking=accept-new';
+        return "ssh -i $key " . implode(' ', self::SSH_OPTIONS);
+    }
+
+    /**
+     * SSH to the server, as a command a word of the server is added to.
+     *
+     * @return string[]
+     */
+    private function sshCommand(): array
+    {
+        return ['ssh', '-i', self::expand($this->key), ...self::SSH_OPTIONS, self::USER . '@' . $this->host];
     }
 
     /**

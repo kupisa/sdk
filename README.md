@@ -29,7 +29,8 @@ and by the AI assistant, never loaded.
 
 ## The command line tool
 
-`vendor/bin/kupisa`, run in the root of the repository, uploads its themes and modules to a site over SSH.
+`vendor/bin/kupisa`, run in the root of the repository, uploads its themes and modules to a site over SSH, and
+carries the content of the site between the site and the repository.
 
 | Command | What it does |
 |---|---|
@@ -38,8 +39,13 @@ and by the AI assistant, never loaded.
 | `kupisa disconnect <host>` | Forgets a connected site. |
 | `kupisa push` | Makes the themes and modules on the selected site the same as in the repository, once: uploads what is new or changed, deletes what is gone. |
 | `kupisa dev` | Does the same, then watches the files and uploads every change as soon as it is saved, until Ctrl+C. Open `https://<site>/dev/on` in your browser, logged in, and the page reloads on every change (`/dev/off` stops that). |
+| `kupisa content/pull` | Writes the content of the selected site (its pages, menus, terms, pictures and areas) into `content/` of the repository, in place of what it holds: a package of files, a file per record, each known by its `uid`. |
+| `kupisa content/push` | Brings the selected site to `content/`: a record the site has by its `uid` is updated, one it does not have is created, and the site tells what it did. A package with an error changes nothing. `--dry-run` only tells what would change; `--delete` also removes the pages, terms, menus and files of the site that `content/` does not hold. |
 
-- `push` and `dev` take `--site=<host>` to work on another connected site without selecting it.
+- `push`, `dev` and the `content` commands take `--site=<host>` to work on another connected site without selecting it.
+- `push` and `dev` never touch `content/`, and the `content` commands never touch `themes/` and `modules/`. What
+  else is kept in `content/` (notes of your own) stays in the repository and is uploaded with the package, but the
+  site reads `site.json`, `media.json`, `media/`, `pages/`, `menus/` and `terms/` only.
 - A PHP file with a syntax error is never uploaded: `push` uploads nothing until it is fixed, `dev` leaves the
   file as the site has it and says why.
 - `themes/` and `modules/` of the repository are mirrored on the server, under the directory of the repository
