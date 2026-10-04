@@ -1,0 +1,1315 @@
+{
+    "blocks": {
+        "generated": {
+            "module": null,
+            "label": "Generated block",
+            "group": "generated",
+            "values": {
+                "code": {
+                    "type": "generate",
+                    "label": "What should this block show?",
+                    "hint": "Describe the block, or the change you want, and generate. The code is written for you.",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "paragraph": {
+            "module": null,
+            "label": "Paragraph",
+            "group": "text",
+            "values": {
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "heading": {
+            "module": null,
+            "label": "Heading",
+            "group": "text",
+            "values": {
+                "text": {
+                    "type": "text",
+                    "label": "Text",
+                    "default": ""
+                },
+                "level": {
+                    "type": "choice",
+                    "label": "Level",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "H1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "H2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "H3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "H4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "H5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "H6"
+                        }
+                    ],
+                    "default": "h2"
+                },
+                "align": {
+                    "type": "choice",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "start",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        }
+                    ],
+                    "default": "start"
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "image": {
+            "module": null,
+            "label": "Image",
+            "group": "media",
+            "values": {
+                "image": {
+                    "type": "media",
+                    "label": "Image",
+                    "default": null
+                }
+            },
+            "references": {
+                "image": "media"
+            },
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "features": {
+            "module": null,
+            "label": "Features",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "columns": {
+                    "type": "choice",
+                    "label": "Columns",
+                    "options": [
+                        {
+                            "value": "2",
+                            "label": "2"
+                        },
+                        {
+                            "value": "3",
+                            "label": "3"
+                        },
+                        {
+                            "value": "4",
+                            "label": "4"
+                        }
+                    ],
+                    "default": "3"
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Items",
+                    "fields": {
+                        "image": {
+                            "type": "media",
+                            "label": "Picture",
+                            "default": null
+                        },
+                        "title": {
+                            "type": "text",
+                            "label": "Title",
+                            "default": null
+                        },
+                        "text": {
+                            "type": "textarea",
+                            "label": "Text",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {
+                "items.image": "media"
+            },
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "hero": {
+            "module": null,
+            "label": "Hero",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                },
+                "image": {
+                    "type": "media",
+                    "label": "Picture",
+                    "default": null
+                },
+                "layout": {
+                    "type": "choice",
+                    "label": "Picture",
+                    "options": [
+                        {
+                            "value": "background",
+                            "label": "Behind"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        },
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        }
+                    ],
+                    "default": "background"
+                },
+                "align": {
+                    "type": "choice",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "start",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        }
+                    ],
+                    "default": "center"
+                },
+                "height": {
+                    "type": "choice",
+                    "label": "Height",
+                    "options": [
+                        {
+                            "value": "sm",
+                            "label": "Small"
+                        },
+                        {
+                            "value": "md",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "lg",
+                            "label": "Large"
+                        },
+                        {
+                            "value": "full",
+                            "label": "Screen"
+                        }
+                    ],
+                    "default": "md"
+                },
+                "overlay": {
+                    "type": "number",
+                    "label": "Darkening of the picture (%)",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5,
+                    "default": 40
+                },
+                "button": {
+                    "type": "link",
+                    "label": "Button",
+                    "default": {
+                        "label": "",
+                        "url": "",
+                        "new_tab": false
+                    }
+                }
+            },
+            "references": {
+                "image": "media"
+            },
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "button": {
+            "module": null,
+            "label": "Button",
+            "group": "text",
+            "values": {
+                "link": {
+                    "type": "link",
+                    "label": "Link",
+                    "default": {
+                        "label": "",
+                        "url": "",
+                        "new_tab": false
+                    }
+                },
+                "style": {
+                    "type": "choice",
+                    "label": "Style",
+                    "options": [
+                        {
+                            "value": "primary",
+                            "label": "Primary"
+                        },
+                        {
+                            "value": "secondary",
+                            "label": "Secondary"
+                        },
+                        {
+                            "value": "outline",
+                            "label": "Outline"
+                        },
+                        {
+                            "value": "link",
+                            "label": "Link"
+                        }
+                    ],
+                    "default": "primary"
+                },
+                "size": {
+                    "type": "choice",
+                    "label": "Size",
+                    "options": [
+                        {
+                            "value": "sm",
+                            "label": "Small"
+                        },
+                        {
+                            "value": "md",
+                            "label": "Medium"
+                        },
+                        {
+                            "value": "lg",
+                            "label": "Large"
+                        }
+                    ],
+                    "default": "md"
+                },
+                "align": {
+                    "type": "choice",
+                    "label": "Alignment",
+                    "options": [
+                        {
+                            "value": "start",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        }
+                    ],
+                    "default": "start"
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "services": {
+            "module": null,
+            "label": "Services",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Services",
+                    "fields": {
+                        "title": {
+                            "type": "text",
+                            "label": "Title",
+                            "default": null
+                        },
+                        "text": {
+                            "type": "textarea",
+                            "label": "Text",
+                            "default": null
+                        },
+                        "price": {
+                            "type": "text",
+                            "label": "Price",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "steps": {
+            "module": null,
+            "label": "Steps",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Steps",
+                    "fields": {
+                        "title": {
+                            "type": "text",
+                            "label": "Title",
+                            "default": null
+                        },
+                        "text": {
+                            "type": "textarea",
+                            "label": "Text",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "gallery": {
+            "module": null,
+            "label": "Gallery",
+            "group": "media",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "columns": {
+                    "type": "choice",
+                    "label": "Columns",
+                    "options": [
+                        {
+                            "value": "2",
+                            "label": "2"
+                        },
+                        {
+                            "value": "3",
+                            "label": "3"
+                        },
+                        {
+                            "value": "4",
+                            "label": "4"
+                        }
+                    ],
+                    "default": "3"
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Pictures",
+                    "fields": {
+                        "image": {
+                            "type": "media",
+                            "label": "Picture",
+                            "default": null
+                        },
+                        "caption": {
+                            "type": "text",
+                            "label": "Caption",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {
+                "items.image": "media"
+            },
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "testimonials": {
+            "module": null,
+            "label": "Testimonials",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Testimonials",
+                    "fields": {
+                        "quote": {
+                            "type": "textarea",
+                            "label": "Quote",
+                            "default": null
+                        },
+                        "name": {
+                            "type": "text",
+                            "label": "Name",
+                            "default": null
+                        },
+                        "detail": {
+                            "type": "text",
+                            "label": "Detail",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "faq": {
+            "module": null,
+            "label": "Questions and answers",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "items": {
+                    "type": "repeater",
+                    "label": "Questions",
+                    "fields": {
+                        "question": {
+                            "type": "text",
+                            "label": "Question",
+                            "default": null
+                        },
+                        "answer": {
+                            "type": "textarea",
+                            "label": "Answer",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "cta": {
+            "module": null,
+            "label": "Call to action",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                },
+                "button": {
+                    "type": "link",
+                    "label": "Button",
+                    "default": {
+                        "label": "",
+                        "url": "",
+                        "new_tab": false
+                    }
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "lg",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "contact": {
+            "module": null,
+            "label": "Contact",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                },
+                "phone": {
+                    "type": "text",
+                    "label": "Phone",
+                    "default": ""
+                },
+                "email": {
+                    "type": "text",
+                    "label": "Email address",
+                    "default": ""
+                },
+                "address": {
+                    "type": "textarea",
+                    "label": "Address",
+                    "default": ""
+                },
+                "hours": {
+                    "type": "textarea",
+                    "label": "Opening hours",
+                    "default": ""
+                },
+                "map": {
+                    "type": "text",
+                    "label": "Map",
+                    "hint": "The address of the map from Google Maps: \"Share\", then \"Embed a map\", then the address in src=\"...\".",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "html": {
+            "module": null,
+            "label": "HTML",
+            "group": "other",
+            "values": {
+                "code": {
+                    "type": "code",
+                    "language": "html",
+                    "label": "HTML",
+                    "hint": "Rendered as it is, nothing is cleaned or checked.",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "css": {
+            "module": null,
+            "label": "CSS",
+            "group": "other",
+            "values": {
+                "code": {
+                    "type": "code",
+                    "language": "css",
+                    "label": "CSS",
+                    "hint": "Put in a <style> tag as it is; the rules apply to the whole page.",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "none",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "js": {
+            "module": null,
+            "label": "JavaScript",
+            "group": "other",
+            "values": {
+                "code": {
+                    "type": "code",
+                    "language": "javascript",
+                    "label": "JavaScript",
+                    "hint": "Put in a <script> tag as it is, and run when the page reaches it.",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "none",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "example": {
+            "module": "example",
+            "label": "Greeting",
+            "group": "text",
+            "values": {
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "default": ""
+                },
+                "size": {
+                    "type": "number",
+                    "label": "Size of the greeting",
+                    "units": [
+                        "rem",
+                        "px"
+                    ],
+                    "min": 0,
+                    "step": 0.25,
+                    "default": {
+                        "value": null,
+                        "unit": "rem"
+                    }
+                },
+                "guests": {
+                    "type": "repeater",
+                    "label": "Guests",
+                    "fields": {
+                        "name": {
+                            "type": "text",
+                            "label": "Name",
+                            "default": null
+                        },
+                        "note": {
+                            "type": "textarea",
+                            "label": "Note",
+                            "default": null
+                        }
+                    },
+                    "default": []
+                },
+                "more": {
+                    "type": "link",
+                    "label": "Read more",
+                    "default": {
+                        "label": "",
+                        "url": "",
+                        "new_tab": false
+                    }
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "text-field": {
+            "module": "form",
+            "label": "Text field",
+            "group": "form",
+            "values": {
+                "kind": {
+                    "type": "choice",
+                    "label": "Kind",
+                    "options": [
+                        {
+                            "value": "text",
+                            "label": "Text"
+                        },
+                        {
+                            "value": "email",
+                            "label": "Email"
+                        },
+                        {
+                            "value": "phone",
+                            "label": "Phone"
+                        },
+                        {
+                            "value": "number",
+                            "label": "Number"
+                        },
+                        {
+                            "value": "url",
+                            "label": "Address"
+                        }
+                    ],
+                    "default": "text"
+                },
+                "placeholder": {
+                    "type": "text",
+                    "label": "Placeholder",
+                    "default": ""
+                },
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                },
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "hint": "What the value is called in the entries and the email, e.g. email. Made from the label when left empty.",
+                    "default": ""
+                },
+                "required": {
+                    "type": "toggle",
+                    "label": "Required",
+                    "default": false
+                },
+                "hint": {
+                    "type": "text",
+                    "label": "Hint",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "long-text": {
+            "module": "form",
+            "label": "Long text",
+            "group": "form",
+            "values": {
+                "placeholder": {
+                    "type": "text",
+                    "label": "Placeholder",
+                    "default": ""
+                },
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                },
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "hint": "What the value is called in the entries and the email, e.g. email. Made from the label when left empty.",
+                    "default": ""
+                },
+                "required": {
+                    "type": "toggle",
+                    "label": "Required",
+                    "default": false
+                },
+                "hint": {
+                    "type": "text",
+                    "label": "Hint",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "dropdown": {
+            "module": "form",
+            "label": "Dropdown",
+            "group": "form",
+            "values": {
+                "options": {
+                    "type": "textarea",
+                    "label": "Options",
+                    "hint": "One per line.",
+                    "default": ""
+                },
+                "placeholder": {
+                    "type": "text",
+                    "label": "Placeholder",
+                    "default": ""
+                },
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                },
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "hint": "What the value is called in the entries and the email, e.g. email. Made from the label when left empty.",
+                    "default": ""
+                },
+                "required": {
+                    "type": "toggle",
+                    "label": "Required",
+                    "default": false
+                },
+                "hint": {
+                    "type": "text",
+                    "label": "Hint",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "checkbox": {
+            "module": "form",
+            "label": "Checkbox",
+            "group": "form",
+            "values": {
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                },
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "hint": "What the value is called in the entries and the email, e.g. email. Made from the label when left empty.",
+                    "default": ""
+                },
+                "required": {
+                    "type": "toggle",
+                    "label": "Required",
+                    "default": false
+                },
+                "hint": {
+                    "type": "text",
+                    "label": "Hint",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "submit": {
+            "module": "form",
+            "label": "Submit button",
+            "group": "form",
+            "values": {
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "none",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "form": {
+            "module": "form",
+            "label": "Form",
+            "group": "sections",
+            "values": {
+                "form": {
+                    "default": null
+                }
+            },
+            "references": {
+                "form": "page"
+            },
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "reviews": {
+            "module": "review",
+            "label": "Latest reviews",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "count": {
+                    "type": "select",
+                    "label": "Number of reviews",
+                    "options": [
+                        {
+                            "value": "3",
+                            "label": "3"
+                        },
+                        {
+                            "value": "6",
+                            "label": "6"
+                        },
+                        {
+                            "value": "9",
+                            "label": "9"
+                        }
+                    ],
+                    "default": 3
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        }
+    },
+    "areas": {
+        "header": {
+            "menu": {
+                "type": "menu",
+                "label": "Menu",
+                "default": null
+            }
+        },
+        "footer": {
+            "text": {
+                "type": "textarea",
+                "label": "Text",
+                "default": ""
+            },
+            "menu": {
+                "type": "menu",
+                "label": "Menu",
+                "default": null
+            }
+        },
+        "appearance": {
+            "color_primary": {
+                "default": ""
+            },
+            "color_secondary": {
+                "default": ""
+            },
+            "color_background": {
+                "default": ""
+            },
+            "color_text": {
+                "default": ""
+            },
+            "color_heading": {
+                "default": ""
+            },
+            "font_body": {
+                "default": ""
+            },
+            "font_heading": {
+                "default": ""
+            },
+            "font_size": {
+                "default": ""
+            },
+            "spacing": {
+                "default": ""
+            },
+            "radius": {
+                "default": ""
+            },
+            "container": {
+                "default": ""
+            },
+            "css": {
+                "default": ""
+            }
+        }
+    },
+    "pages": {
+        "page": {
+            "module": null,
+            "public": true,
+            "meta": {},
+            "references": {},
+            "taxonomies": [],
+            "blockGroups": [
+                "generated",
+                "text",
+                "media",
+                "sections",
+                "other"
+            ]
+        },
+        "post": {
+            "module": "blog",
+            "public": true,
+            "meta": {
+                "published_at": null,
+                "author_id": null,
+                "excerpt": "",
+                "image": null
+            },
+            "references": {
+                "image": "media",
+                "author_id": "user"
+            },
+            "taxonomies": [
+                "blog_category",
+                "blog_tag"
+            ],
+            "blockGroups": [
+                "generated",
+                "text",
+                "media",
+                "sections",
+                "other"
+            ]
+        },
+        "event": {
+            "module": "example",
+            "public": true,
+            "meta": {
+                "date": null,
+                "location": "",
+                "description": ""
+            },
+            "references": {},
+            "taxonomies": [],
+            "blockGroups": [
+                "generated",
+                "text",
+                "media",
+                "sections",
+                "other"
+            ]
+        },
+        "form": {
+            "module": "form",
+            "public": false,
+            "meta": {
+                "success_message": ""
+            },
+            "references": {},
+            "taxonomies": [],
+            "blockGroups": [
+                "generated",
+                "form",
+                "text"
+            ]
+        },
+        "product": {
+            "module": "shop",
+            "public": true,
+            "meta": {
+                "images": [],
+                "options": [],
+                "tax_rate": "",
+                "short_description": "",
+                "related": [],
+                "min_quantity": 1,
+                "quantity_step": 1,
+                "unit": "",
+                "weight": null
+            },
+            "references": {
+                "images": "media",
+                "options": "term",
+                "related": "page"
+            },
+            "taxonomies": [
+                "shop_category",
+                "shop_tag",
+                "shop_attribute"
+            ],
+            "blockGroups": [
+                "generated",
+                "text",
+                "media",
+                "sections",
+                "other"
+            ]
+        }
+    },
+    "taxonomies": {
+        "blog_category": {
+            "module": "blog",
+            "hierarchy": "tree",
+            "public": true,
+            "meta": {},
+            "references": {}
+        },
+        "blog_tag": {
+            "module": "blog",
+            "hierarchy": "none",
+            "public": true,
+            "meta": {},
+            "references": {}
+        },
+        "shop_category": {
+            "module": "shop",
+            "hierarchy": "tree",
+            "public": true,
+            "meta": {},
+            "references": {}
+        },
+        "shop_tag": {
+            "module": "shop",
+            "hierarchy": "none",
+            "public": true,
+            "meta": {
+                "badge": false,
+                "background": "#000000",
+                "color": "#ffffff"
+            },
+            "references": {}
+        },
+        "shop_attribute": {
+            "module": "shop",
+            "hierarchy": "levels",
+            "public": false,
+            "meta": {
+                "display": null,
+                "color": null,
+                "image": null
+            },
+            "references": {
+                "image": "media"
+            }
+        }
+    },
+    "settings": {
+        "home_page": "page",
+        "privacy_page": "page",
+        "terms_page": "page",
+        "contact_page": "page",
+        "logo": "media",
+        "favicon": "media"
+    },
+    "statuses": {
+        "page": [
+            "draft",
+            "published"
+        ],
+        "term": [
+            "visible",
+            "hidden"
+        ]
+    }
+}

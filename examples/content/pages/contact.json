@@ -1,0 +1,23 @@
+{
+    "uid": "page-contact",
+    "type": "page",
+    "title": "Contact",
+    "slug": "contact",
+    "status": "published",
+    "meta": {},
+    "blocks": [
+        {
+            "name": "contact",
+            "values": {
+                "title": "Write to us",
+                "text": "We answer within a day.",
+                "phone": "011 000 0000",
+                "email": "info@example.com",
+                "address": "1 Main Street\nSpringfield",
+                "hours": "Monday to Friday: 9 am to 5 pm",
+                "map": ""
+            },
+            "settings": {}
+        }
+    ]
+}

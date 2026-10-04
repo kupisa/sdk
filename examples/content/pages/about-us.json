@@ -1,0 +1,25 @@
+{
+    "uid": "page-about",
+    "type": "page",
+    "title": "About us",
+    "slug": "about-us",
+    "status": "published",
+    "meta": {},
+    "blocks": [
+        {
+            "name": "heading",
+            "values": {"text": "About us", "level": "h1", "align": "start"},
+            "settings": {}
+        },
+        {
+            "name": "paragraph",
+            "values": {"text": "We are three friends who have walked these hills since childhood, and since 2019 we take others along."},
+            "settings": {}
+        },
+        {
+            "name": "image",
+            "values": {"image": "@media:hero"},
+            "settings": {}
+        }
+    ]
+}

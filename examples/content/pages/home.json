@@ -1,0 +1,46 @@
+{
+    "uid": "page-home",
+    "type": "page",
+    "title": "Home",
+    "slug": "home",
+    "status": "published",
+    "meta": {},
+    "blocks": [
+        {
+            "name": "hero",
+            "values": {
+                "title": "Walks worth getting up early for",
+                "text": "Guided walks in the hills, in small groups, every weekend from April to October.",
+                "image": "@media:hero",
+                "layout": "background",
+                "align": "center",
+                "height": "lg",
+                "overlay": 40,
+                "button": {"label": "About us", "url": "/about-us", "new_tab": false}
+            },
+            "settings": {"spacing": "none"}
+        },
+        {
+            "name": "features",
+            "values": {
+                "title": "What you get",
+                "columns": "3",
+                "items": [
+                    {"image": null, "title": "Small groups", "text": "Eight people at most, so nobody is left behind."},
+                    {"image": null, "title": "Local guides", "text": "People who grew up on these paths."},
+                    {"image": null, "title": "Every weekend", "text": "Saturday and Sunday, whatever the forecast promised."}
+                ]
+            },
+            "settings": {"spacing": "lg"}
+        },
+        {
+            "name": "cta",
+            "values": {
+                "title": "Coming along?",
+                "text": "Write to us and we will keep a place for you.",
+                "button": {"label": "Contact", "url": "/contact", "new_tab": false}
+            },
+            "settings": {}
+        }
+    ]
+}

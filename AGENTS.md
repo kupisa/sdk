@@ -6,14 +6,19 @@ may build on is in the SDK, in the directory of this file:
 
 - `docs/theme.md`: how a theme is built. Read it before you write or change a theme.
 - `docs/blocks.md`: how a block is built. Read it before you write or change a block.
+- `docs/content.md`: how the content of a site (its pages, menus, terms, pictures and areas) is written as files
+  in `content/`. Read it before you write or change content.
 - `examples/themes/starter/`: a small, complete theme. A new theme starts as a copy of it.
+- `examples/content/`: a small, complete package of content.
+- `reference/content.json`: what content is written with, as data: every block of the platform and of its
+  modules with its values, the areas, the kinds of pages and the taxonomies.
 - `stubs/`: the public classes of the platform, by namespace (`stubs/frontend/blocks/Block.php` is
   `frontend\blocks\Block`). The comments and the signatures are real; the bodies of the methods are left out,
   so an empty method does not mean it does nothing.
 - `frontend/`: the views of the site and of its blocks as the platform draws them, and its design tokens
   (`frontend/public/css/src/_tokens.scss`).
 
-`stubs/`, `examples/` and `frontend/` come from the platform. Read them, never edit them.
+`stubs/`, `examples/`, `reference/` and `frontend/` come from the platform. Read them, never edit them.
 
 ## What you may use
 
@@ -26,6 +31,7 @@ may build on is in the SDK, in the directory of this file:
 
 - A theme lives in `themes/<name>/` of this repository, with a `Theme` class in it. Modules (`modules/<name>/`)
   are not covered by the SDK yet.
+- The content of the site lives in `content/` of this repository, as the package `docs/content.md` describes.
 - The namespace of a class is its path from the `sites` directory of the platform, which this repository is
   cloned into. The `AGENTS.md` of this repository names the prefix: with the prefix `sites\acme`, the theme
   `paris` is `sites\acme\themes\paris\Theme` in `themes/paris/Theme.php`.
@@ -61,3 +67,7 @@ may build on is in the SDK, in the directory of this file:
   could not check.
 - Uploading is the developer's to do, with `vendor/bin/kupisa push` or `vendor/bin/kupisa dev` (see the
   `README.md` of the SDK). Never run them unless you are asked to: they change a site right away.
+- The same goes for the content: `vendor/bin/kupisa content/push` changes the pages of a site right away, and
+  `content/pull` replaces the package in `content/`. When you are asked to push content, run it with `--dry-run`
+  first and read what it would do; never add `--delete` unless you are asked to. A push that reports errors
+  changed nothing: fix the files it names and push again.

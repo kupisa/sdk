@@ -1,0 +1,17 @@
+{
+    "uid": "menu-main",
+    "label": "Main menu",
+    "items": [
+        {"label": "Home", "type": "page", "target": "@page:page-home", "new_tab": false, "children": []},
+        {
+            "label": "About us",
+            "type": "page",
+            "target": "@page:page-about",
+            "new_tab": false,
+            "children": [
+                {"label": "The hills", "type": "url", "target": "https://example.com/hills", "new_tab": true, "children": []}
+            ]
+        },
+        {"label": "Contact", "type": "page", "target": "@page:page-contact", "new_tab": false, "children": []}
+    ]
+}

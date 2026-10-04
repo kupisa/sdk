@@ -107,6 +107,37 @@ class Page extends SiteRecord
     }
 
     /**
+     * Whether the pages of this kind travel in the content of a site (see `common\content\Content`): a kind that
+     * is in its row, with the records it names (see {@see references()}) and its terms (see {@see taxonomies()}).
+     * A kind with records of its own elsewhere (the variants of a product) says false.
+     */
+    public static function inContent(): bool
+    {
+    }
+
+    /**
+     * The values of this kind of page that hold the id of a record of the site, and what kind of record each
+     * names (`media`, `page`, `menu`, `term` or `user`), by the name of the value: `['image' => 'media',
+     * 'author_id' => 'user']` for a post. A value may hold one id or a list of them. The content of a site
+     * travels with them as references.
+     *
+     * @return array<string, string>
+     */
+    public static function references(): array
+    {
+    }
+
+    /**
+     * The taxonomies a page of this kind is put in (see `common\behaviors\TermsBehavior`): the categories and
+     * the tags of a post. The content of a site travels with the terms of each.
+     *
+     * @return list<class-string<Term>>
+     */
+    public static function taxonomies(): array
+    {
+    }
+
+    /**
      * The kinds of pages of the site, the class of each by its type: the plain page and the kinds the enabled
      * modules bring (see `modules\Module::pageTypes()`).
      *

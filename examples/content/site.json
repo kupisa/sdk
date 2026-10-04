@@ -1,0 +1,10 @@
+{
+    "areas": {
+        "header": {"menu": "@menu:menu-main"},
+        "footer": {"text": "Guided walks in the hills since 2019.", "menu": "@menu:menu-main"}
+    },
+    "settings": {
+        "home_page": "@page:page-home",
+        "contact_page": "@page:page-contact"
+    }
+}

@@ -6,13 +6,15 @@ and for the AI assistant they work with.
 | Path | What it holds |
 |---|---|
 | `AGENTS.md` | The rules an AI assistant follows when it writes a theme. Start here. |
-| `docs/` | The guides: how a theme is built, how a block is built. |
+| `docs/` | The guides: how a theme is built, how a block is built, how the content of a site is written as files. |
 | `examples/themes/starter/` | A small, complete theme to start from. |
+| `examples/content/` | A small, complete package of content: pages, a menu, a picture and the areas of a site. |
+| `reference/content.json` | What content is written with: every block of the platform and of its modules with its values, the areas, the kinds of pages and the taxonomies. |
 | `stubs/` | The public classes of the platform: their comments and signatures, without the code. |
 | `frontend/` | The views of the site and of its blocks, which a theme replaces file by file, and its design tokens. |
-| `bin/kupisa`, `cli/` | The command line tool that uploads the themes and modules of a repository to a site. |
+| `bin/kupisa`, `cli/` | The command line tool that uploads the themes and modules of a repository to a site, and carries the content of the site. |
 
-`stubs/`, `examples/` and `frontend/` are written from the platform at every release, so they always match what
+`stubs/`, `examples/`, `reference/` and `frontend/` are written from the platform at every release, so they always match what
 runs on the servers. Do not edit them by hand.
 
 ## Using it
