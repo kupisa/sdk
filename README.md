@@ -1,12 +1,12 @@
 # Kupiša SDK
 
-Everything a theme of the Kupiša platform is built with, for a developer who does not see the code of the platform
-and for the AI assistant they work with.
+Everything a theme or a module of the Kupiša platform is built with, for a developer who does not see the code of
+the platform and for the AI assistant they work with.
 
 | Path | What it holds |
 |---|---|
-| `AGENTS.md` | The rules an AI assistant follows when it writes a theme. Start here. |
-| `docs/` | The guides: how a theme is built, how a block is built, how the content of a site is written as files. |
+| `AGENTS.md` | The rules an AI assistant follows when it writes a theme or a module. Start here. |
+| `docs/` | The guides: how a theme is built, how a module is built, how a block is built, how the content of a site is written as files. |
 | `examples/themes/starter/` | A small, complete theme to start from. |
 | `examples/content/` | A small, complete package of content: pages, a menu, a picture and the areas of a site. |
 | `reference/content.json` | What content is written with: every block of the platform and of its modules with its values, the areas, the kinds of pages and the taxonomies. |
@@ -19,7 +19,7 @@ runs on the servers. Do not edit them by hand.
 
 ## Using it
 
-The SDK is a development dependency of a repository of themes, made from the
+The SDK is a development dependency of a repository of themes and modules, made from the
 [template](https://github.com/kupisa/template):
 
 ```

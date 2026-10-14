@@ -12,10 +12,10 @@ use yii\base\Widget;
 
 /**
  * The actions of the header: the icons at the right of the bar, next to the navigation. The platform puts the
- * search there while the site has it on (see `frontend\models\Search`) and the account: for a visitor the way
- * to the login page, while the site takes new accounts (see `common\helpers\Signup`), and for a logged-in user,
- * always, the way to their account area (`/account`, where they log out too). A module adds its own through
- * the `header.actions` hook (filter):
+ * search there while the site has it on (see `frontend\models\Search`) and, while the site takes new accounts
+ * (see `common\helpers\Signup`), the account: for a visitor the way to the login page, for a logged-in user the
+ * way to their account area (`/account`, where they log out too). A site that takes no accounts has no account
+ * action, for a logged-in user neither. A module adds its own through the `header.actions` hook (filter):
  * the wishlist and the cart of a shop. Every action is its `label` (read by a screen reader and shown as a
  * tooltip), its `icon` (an SVG in the outline style of the site, `currentColor`) and either a `url` it leads to
  * or the id of the `dialog` it opens (see js/src/site.js), and says with `focused` whether it stays in the

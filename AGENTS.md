@@ -1,10 +1,11 @@
 # Building for the Kupiša platform
 
 Kupiša is a multi-site platform built on PHP 8.4 and Yii2: one server serves many sites, and every site picks a
-theme. This repository holds themes made for particular sites. You do not see the code of the platform; what you
-may build on is in the SDK, in the directory of this file:
+theme and enables modules. This repository holds the themes and the modules made for particular sites. You do not
+see the code of the platform; what you may build on is in the SDK, in the directory of this file:
 
 - `docs/theme.md`: how a theme is built. Read it before you write or change a theme.
+- `docs/module.md`: how a module is built. Read it before you write or change a module.
 - `docs/blocks.md`: how a block is built. Read it before you write or change a block.
 - `docs/content.md`: how the content of a site (its pages, menus, terms, pictures and areas) is written as files
   in `content/`. Read it before you write or change content.
@@ -25,27 +26,32 @@ may build on is in the SDK, in the directory of this file:
 - Only the classes in `stubs/` and Yii2 itself. A class of the platform that has no stub is not public: do not
   call it, even when a view in `frontend/` or a comment names it. When a task needs something the stubs do not
   offer, say so instead of guessing.
-- A theme never touches the database schema, the configuration of the platform or the files of another theme.
+- A theme or a module never touches the database schema, the configuration of the platform or the files of
+  another theme or module.
 
 ## Where code goes
 
-- A theme lives in `themes/<name>/` of this repository, with a `Theme` class in it. Modules (`modules/<name>/`)
-  are not covered by the SDK yet.
+- A theme lives in `themes/<name>/` of this repository, with a `Theme` class in it that extends `themes\Theme`.
+- A module lives in `modules/<name>/` of this repository, with a `Module` class in it that extends
+  `modules\Module`, never `yii\base\Module`: the platform does not load a module that does not. A module for a
+  site is made only here, never anywhere else.
 - The content of the site lives in `content/` of this repository, as the package `docs/content.md` describes.
 - The namespace of a class is its path from the `sites` directory of the platform, which this repository is
   cloned into. The `AGENTS.md` of this repository names the prefix: with the prefix `sites\acme`, the theme
-  `paris` is `sites\acme\themes\paris\Theme` in `themes/paris/Theme.php`.
-- The name of a theme is the name of its directory: lowercase letters and digits only, and unique on the whole
-  server. It may not be the name of a theme or a module of the platform (`default`, `starter`, `dental`,
+  `paris` is `sites\acme\themes\paris\Theme` in `themes/paris/Theme.php`, and the module `realizations` is
+  `sites\acme\modules\realizations\Module` in `modules/realizations/Module.php`.
+- The name of a theme or a module is the name of its directory: lowercase letters and digits only, and unique on
+  the whole server, so a theme and a module never share one. It may not be the name of a theme or a module of the
+  platform (`default`, `starter`, `dental`,
   `construction`, `craftsman`, `realestate`, `realify`, `shop`, `blog`, `seo`, `form`, `cookie`, ...): pick
   a name of the client or the project.
 
 ## Rules of the code
 
 - **English only.** Code, comments, the names of files and the source of every text are in English.
-- **Translate every text.** A text shown to a person goes through `Yii::t('<theme name>', '...')`, with the
-  name of the theme as the category, and gets its translation in `messages/<language>/<theme name>.php` in the
-  same change, for every language the theme has (see `docs/theme.md`).
+- **Translate every text.** A text shown to a person goes through `Yii::t('<name>', '...')`, with the name of
+  the theme or the module as the category, and gets its translation in `messages/<language>/<name>.php` in the
+  same change, for every language the site has (see `docs/theme.md`, `docs/module.md`).
 - **Readable first.** Prefer the plain solution Yii2 already has. Every class and every method has a comment
   that says what it is for, as the example theme does.
 - **Views carry no logic.** A view only echoes, with `if` and `foreach`, what its block or controller passes.
@@ -63,8 +69,8 @@ may build on is in the SDK, in the directory of this file:
 
 - `vendor/bin/phpstan` checks the code against the stubs: a call to something the platform does not offer
   fails. Run it after every change and leave it without errors.
-- The theme itself is seen on a site of the platform once it is uploaded; you cannot run it here. Say what you
-  could not check.
+- The theme or the module itself is seen on a site of the platform once it is uploaded; you cannot run it here.
+  Say what you could not check.
 - Uploading is the developer's to do, with `vendor/bin/kupisa push` or `vendor/bin/kupisa dev` (see the
   `README.md` of the SDK). Never run them unless you are asked to: they change a site right away.
 - The same goes for the content: `vendor/bin/kupisa content/push` changes the pages of a site right away, and
