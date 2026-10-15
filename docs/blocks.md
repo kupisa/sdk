@@ -24,7 +24,7 @@ It extends `frontend\blocks\Block`.
 
 - **Values** are public properties with a default: `public string $text = '';`. They are what a page stores.
 - `label()`: the name of the block in the editor, translated.
-- `group()`: where the editor lists it, a case of `frontend\blocks\BlockGroup` (`Text`, `Media`, `Sections`).
+- `group()`: where the editor lists it, a case of `frontend\blocks\BlockGroup` (`Text`, `Media`, `Sections`, `Shop`).
 - `controls()`: how each value is edited, one definition per value in the order the form shows them:
 
   ```php
@@ -35,7 +35,8 @@ It extends `frontend\blocks\Block`.
   ```
 
   The controls: `text`, `textarea`, `number`, `toggle`, `choice` (with its `options`), `media` (a picture),
-  `menu`, `link`, `repeater`, `code`. The comment of `Block::controls()` describes each.
+  `menu`, `link`, `records` (records picked by search, like products), `repeater`, `code`. The comment of
+  `Block::controls()` describes each.
 - `presets()`: the values a new block starts with in the editor, written so it looks finished as soon as it is
   added (a title, a text, the items of a list), translated. A picture is preset only as the stand-in of the
   platform (see below); a phone number or an address never, since it would go public as it is.
