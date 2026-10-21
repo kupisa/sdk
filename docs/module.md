@@ -73,6 +73,10 @@ class Module extends BaseModule
   - `roles()`: roles of its own, or more for a role of the platform:
     `['editor' => ['capabilities' => ['realizations']]]`.
   - `requires()`: the modules it needs (`['shop']`); it is offered only to a site that has them.
+  - `visibility()`, `sites()` and `regions()`: who it is offered to. `Visibility::Private`
+    (`common\models\Visibility`) for a module made for one client, offered then only to the sites it names in
+    `sites()` by their `uid` and to those it was given, which the people who run the server do; `regions()` the
+    countries whose sites it is made for, as ISO 3166-1 codes (`['CZ', 'SK', 'HU']`), every site when empty.
   - `urlRules()` and `paths()`: its addresses on the site (see "Pages on the site" below).
   - `hasSettings()`: true when it has a settings page (see "Settings" below).
 - `tools()` and `notifications()` are not open to a module here yet: leave them as they are.

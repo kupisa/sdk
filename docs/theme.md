@@ -31,8 +31,11 @@ theme in static methods:
 - `areas()`: a header or a footer of its own in place of the one of the site: `['header' => HeaderBlock::class]`.
 - `fonts()`: the Google Fonts the site may choose from in its appearance settings, ten or so that suit the theme.
 - `requires()`: the modules the theme needs (`['shop']`); it is offered only to a site that has them.
-- `visibility()`: `ThemeVisibility::Private` for a theme made for one client. It is then offered only to the
-  sites it was given, which the people who run the server do.
+- `visibility()`: `Visibility::Private` (`common\models\Visibility`) for a theme made for one client. It is then
+  offered only to the sites it names in `sites()`, by their `uid`, and to those it was given, which the people who
+  run the server do.
+- `regions()`: the countries whose sites it is made for, as ISO 3166-1 codes (`['CZ', 'SK']`); every site when
+  left empty.
 
 ## The stylesheet
 
