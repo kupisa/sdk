@@ -36,7 +36,8 @@ carries the content of the site between the site and the repository.
 
 | Command | What it does |
 |---|---|
-| `kupisa connect` | Asks for the host name of a site and for your SSH key, tries the connection and remembers the site. The first site connected is the selected one. |
+| `kupisa connect` | Asks for the host name of a site and for your SSH key, tries the connection and remembers the site with what it is: its uid, name, region, language, theme and enabled modules. The first site connected is the selected one. |
+| `kupisa info` | Asks the selected site what it is now, remembers it and writes it out. `push` and `content/push` ask it too, so it stays as the site is. |
 | `kupisa switch [<host>]` | Selects another connected site: the one named, or one of the list it shows. |
 | `kupisa disconnect <host>` | Forgets a connected site. |
 | `kupisa push` | Makes the themes and modules on the selected site the same as in the repository, once: uploads what is new or changed, deletes what is gone. |
@@ -44,7 +45,7 @@ carries the content of the site between the site and the repository.
 | `kupisa content/pull` | Writes the content of the selected site (its pages, menus, terms, pictures and areas) into `content/` of the repository, in place of what it holds: a package of files, a file per record, each known by its `uid`. |
 | `kupisa content/push` | Brings the selected site to `content/`: a record the site has by its `uid` is updated, one it does not have is created, and the site tells what it did. A package with an error changes nothing. `--dry-run` only tells what would change; `--delete` also removes the pages, terms, menus and files of the site that `content/` does not hold. |
 
-- `push`, `dev` and the `content` commands take `--site=<host>` to work on another connected site without selecting it.
+- `push`, `dev`, `info` and the `content` commands take `--site=<host>` to work on another connected site without selecting it.
 - `push` and `dev` never touch `content/`, and the `content` commands never touch `themes/` and `modules/`. What
   else is kept in `content/` (notes of your own) stays in the repository and is uploaded with the package, but the
   site reads `site.json`, `media.json`, `media/`, `pages/`, `menus/` and `terms/` only.
@@ -59,7 +60,8 @@ carries the content of the site between the site and the repository.
 - A mirror means the repository is the truth: what is deleted here is deleted there, a whole theme or module
   too. Nothing else in the directory of the repository on the server is touched, and nothing outside it is
   reached.
-- The connected sites are kept in `.kupisa.json`, which belongs to your computer and stays out of git.
+- The connected sites are kept in `.kupisa.json`, which belongs to your computer and stays out of git: each with
+  its key and what the site is, which your AI assistant reads to know what it builds for.
 - A server lets you in once we have added your public SSH key to it; `connect` shows the key to send us.
 - It needs PHP and `rsync` on your computer. To type `kupisa` alone, add
   `alias kupisa='vendor/bin/kupisa'` to the profile of your shell.

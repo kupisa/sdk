@@ -21,6 +21,24 @@ see the code of the platform; what you may build on is in the SDK, in the direct
 
 `stubs/`, `examples/`, `reference/` and `frontend/` come from the platform. Read them, never edit them.
 
+## The sites this repository is for
+
+`.kupisa.json` in the root of this repository lists the sites the developer connected (`vendor/bin/kupisa
+connect`), each by its host name with what it is: its `uid`, `name`, `region`, `language`, `theme` and the
+`modules` it enabled, the `core` ones (`shop`) and the `regular` ones; `current` names the selected site. Read
+it before you build anything, and build for what the site has:
+
+- A module that builds on another one names it in `requires()`, and is only offered to a site that enabled it:
+  build around the shop only for a site whose core modules have `shop`, and say so when the site has not.
+- The texts are translated into the `language` of the site (see "Rules of the code" below).
+- The file may be out of date: `vendor/bin/kupisa info` asks the selected site again and writes the file. Run it
+  when what you read there does not match what you are told.
+- With no `.kupisa.json`, no site is connected yet: ask the developer what the site is.
+
+When you create a module, ask the developer whether it is made for particular sites or for every site it suits.
+For particular sites, make it `Visibility::Private` and name the `uid` of each of them in `sites()` right away
+(see `docs/module.md`).
+
 ## What you may use
 
 - Only the classes in `stubs/` and Yii2 itself. A class of the platform that has no stub is not public: do not

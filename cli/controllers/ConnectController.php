@@ -42,11 +42,11 @@ class ConnectController extends Controller
 
         $this->stdout("\nConnecting to $host... ");
 
-        $error = (new Remote($host, $key))->check();
+        $info = (new Remote($host, $key))->info();
 
-        if ($error !== null) {
+        if (is_string($info)) {
             $this->stdout("failed\n\n", Console::FG_RED);
-            $this->stderr("$error\n\n");
+            $this->stderr("$info\n\n");
             $this->explain($key);
 
             return ExitCode::UNAVAILABLE;
@@ -54,7 +54,7 @@ class ConnectController extends Controller
 
         $this->stdout("OK\n", Console::FG_GREEN);
 
-        $config->add($host, $key);
+        $config->add($host, $key, $info);
         $config->save();
 
         $this->stdout($config->current === $host ?

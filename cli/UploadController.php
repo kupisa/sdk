@@ -43,6 +43,26 @@ abstract class UploadController extends Controller
     }
 
     /**
+     * Asks the site what it is now and keeps it in `.kupisa.json`, since a site may enable a module or pick a
+     * theme after it was connected. A site that does not answer keeps what was known of it.
+     *
+     * @return array<string, mixed>|string What the site is, or what the server answered when it failed.
+     */
+    protected function refresh(Remote $remote): array|string
+    {
+        $info = $remote->info();
+
+        if (is_array($info)) {
+            $config = Config::load();
+
+            $config->add($remote->host, $remote->key, $info);
+            $config->save();
+        }
+
+        return $info;
+    }
+
+    /**
      * Writes out the syntax errors that keep files from being uploaded.
      *
      * @param array<string, string> $errors The error by the path of the file.

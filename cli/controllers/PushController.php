@@ -65,6 +65,7 @@ class PushController extends UploadController
         }
 
         $this->stdout($this->changes($output) . "Done.\n", Console::FG_GREEN);
+        $this->refresh($remote);
 
         return ExitCode::OK;
     }

@@ -58,9 +58,12 @@ class ContentController extends UploadController
             return ExitCode::UNAVAILABLE;
         }
 
-        $options = [...($this->delete ? ['--delete'] : []), ...($this->dryRun ? ['--dry-run'] : [])];
+        $options  = [...($this->delete ? ['--delete'] : []), ...($this->dryRun ? ['--dry-run'] : [])];
+        $exitCode = $remote->importContent(Files::client(), $options);
 
-        return $remote->importContent(Files::client(), $options);
+        $this->refresh($remote);
+
+        return $exitCode;
     }
 
     /**

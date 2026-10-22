@@ -40,23 +40,18 @@ class Remote
     }
 
     /**
-     * Tries the connection by uploading an empty directory as a dry run, which writes nothing on the server.
-     * (Listing the directory would be simpler, but the rsync of macOS asks for a listing with `--dirs`, which
-     * the server refuses.)
+     * What the site is, as its server tells it: its uid, name, region, language, theme and the modules it
+     * enabled by their type (`core`, `regular`). Asking it is also how the connection is tried.
      *
-     * @return string|null What rsync answered when it failed, null when the server let the key in.
+     * @return array<string, mixed>|string What the site is, or what the server answered when it failed.
      */
-    public function check(): string|null
+    public function info(): array|string
     {
-        $empty = sys_get_temp_dir() . '/kupisa-' . uniqid();
+        [$exitCode, $output, $errors] = Process::read([...$this->sshCommand(), 'site', 'info', $this->host]);
 
-        mkdir($empty);
+        $info = $exitCode === 0 ? json_decode($output, true) : null;
 
-        [$exitCode, $output] = $this->rsync(['--dry-run', "$empty/", $this->target()]);
-
-        rmdir($empty);
-
-        return $exitCode === 0 ? null : trim($output);
+        return is_array($info) ? $info : trim($errors . $output);
     }
 
     /**

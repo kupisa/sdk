@@ -6,14 +6,18 @@ use yii\console\Exception;
 
 /**
  * The sites a repository is connected to, kept in `.kupisa.json` in its root: every site by its host name with
- * the SSH key it is reached with, and the selected one, which the commands work on. The file belongs to one
+ * the SSH key it is reached with and what the site is (its uid, name, region, language, theme and enabled
+ * modules, see {@see Remote::info()}), and the selected one, which the commands work on. The file belongs to one
  * developer on one computer, so it is kept out of git.
  */
 class Config
 {
     public const FILE = '.kupisa.json';
 
-    /** @var array<string, array{key: string}> The connected sites by host name, in the order they were connected. */
+    /**
+     * @var array<string, array<string, mixed>> The connected sites by host name, in the order they were
+     * connected: the `key` of each and what the site is.
+     */
     public array $sites = [];
 
     /** @var string|null The host name of the selected site, null while no site is connected. */
@@ -68,11 +72,14 @@ class Config
     }
 
     /**
-     * Connects a site, or gives a connected one another key. The first site connected is the selected one.
+     * Connects a site, or gives a connected one another key or what it is now. The first site connected is the
+     * selected one.
+     *
+     * @param array<string, mixed> $info What the site is, as {@see Remote::info()} gives it.
      */
-    public function add(string $host, string $key): void
+    public function add(string $host, string $key, array $info): void
     {
-        $this->sites[$host] = ['key' => $key];
+        $this->sites[$host] = ['key' => $key, ...$info];
         $this->current    ??= $host;
     }
 
