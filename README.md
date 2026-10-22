@@ -6,15 +6,16 @@ the platform and for the AI assistant they work with.
 | Path | What it holds |
 |---|---|
 | `AGENTS.md` | The rules an AI assistant follows when it writes a theme or a module. Start here. |
-| `docs/` | The guides: how a theme is built, how a module is built, how a block is built, how the content of a site is written as files. |
+| `docs/` | The guides: how a theme is built, how a module is built, how a block is built, how a module or a theme builds on the shop, how the content of a site is written as files. |
 | `examples/themes/starter/` | A small, complete theme to start from. |
 | `examples/content/` | A small, complete package of content: pages, a menu, a picture and the areas of a site. |
 | `reference/content.json` | What content is written with: every block of the platform and of its modules with its values, the areas, the kinds of pages and the taxonomies. |
 | `stubs/` | The public classes of the platform: their comments and signatures, without the code. |
 | `frontend/` | The views of the site and of its blocks, which a theme replaces file by file, and its design tokens. |
+| `modules/shop/` | The views of the shop on the site and its stylesheet, which a theme replaces and styles. |
 | `bin/kupisa`, `cli/` | The command line tool that uploads the themes and modules of a repository to a site, and carries the content of the site. |
 
-`stubs/`, `examples/`, `reference/` and `frontend/` are written from the platform at every release, so they always match what
+`stubs/`, `examples/`, `reference/`, `frontend/` and `modules/` are written from the platform at every release, so they always match what
 runs on the servers. Do not edit them by hand.
 
 ## Using it
@@ -49,6 +50,8 @@ carries the content of the site between the site and the repository.
 - `push` and `dev` never touch `content/`, and the `content` commands never touch `themes/` and `modules/`. What
   else is kept in `content/` (notes of your own) stays in the repository and is uploaded with the package, but the
   site reads `site.json`, `media.json`, `media/`, `pages/`, `menus/` and `terms/` only.
+- `push` and `dev` warn about a theme or a module whose code uses the shop (`modules\shop\…`) but whose
+  `requires()` does not name `shop`: a site without the shop would break on it. It is uploaded all the same.
 - A PHP file with a syntax error is never uploaded: `push` uploads nothing until it is fixed, `dev` leaves the
   file as the site has it and says why.
 - `themes/` and `modules/` of the repository are mirrored on the server, under the directory of the repository

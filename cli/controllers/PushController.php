@@ -4,6 +4,7 @@ namespace kupisa\cli\controllers;
 
 use kupisa\cli\Files;
 use kupisa\cli\Lint;
+use kupisa\cli\Requirements;
 use kupisa\cli\UploadController;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -52,6 +53,7 @@ class PushController extends UploadController
 
         $directory = $client === null ? '' : "$client/";
 
+        $this->reportRequirements(Requirements::missing());
         $this->stdout("Uploading to {$remote->host}, sites/$directory\n", Console::BOLD);
 
         Files::touchDirectories();

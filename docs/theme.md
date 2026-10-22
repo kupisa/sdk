@@ -73,6 +73,9 @@ and edit the copy:
   the theme adds uses the category of the theme.
 - Replace only what the stylesheet cannot do. A view the theme does not have stays the one of the platform and
   keeps getting its improvements.
+- The views of the shop are in `modules/shop/` of the SDK and are replaced under `themes/<name>/modules/shop/`
+  the same way (see "A theme and the shop" in `docs/shop.md`). A theme whose own code uses the shop (a block
+  that shows products) names it in `requires()`.
 
 ## A header or a footer of its own
 

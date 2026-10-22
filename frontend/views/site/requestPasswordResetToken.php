@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var frontend\models\PasswordResetRequestForm $model */
 
+use common\widgets\botguard\BotGuardFields;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="text-muted"><?= Yii::t('app', 'Enter your email address and we will send you a link to set a new password.') ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']) ?>
+        <?= BotGuardFields::widget(['action' => 'password-reset']) ?>
         <?= $form->field($model, 'email')->textInput(['type' => 'email', 'autofocus' => true, 'autocomplete' => 'email']) ?>
         <?= Html::submitButton(Yii::t('app', 'Send the link'), ['class' => 'btn btn-primary w-100', 'name' => 'request-password-reset-button']) ?>
         <?php ActiveForm::end() ?>

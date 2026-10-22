@@ -6,6 +6,7 @@ namespace modules;
 
 use common\models\Page;
 use common\models\Term;
+use common\models\Visibility;
 use frontend\blocks\Block;
 use ReflectionClass;
 use Yii;
@@ -64,6 +65,35 @@ abstract class Module extends \yii\base\Module
      * @return list<string>
      */
     public static function requires(): array
+    {
+    }
+
+    /**
+     * Who the module is offered to: every site (or every site of its {@see regions()}), or, when it is private,
+     * only the sites that were given it (see {@see Modules::grant()}) and those it names (see {@see sites()}).
+     */
+    public static function visibility(): Visibility
+    {
+    }
+
+    /**
+     * The ISO 3166-1 codes of the countries whose sites the module is offered to (see `Site::$region`), e.g.
+     * `['CZ', 'SK', 'HU']` for a carrier that delivers there only; every site when empty. A site given the
+     * module or named by it gets it wherever it is.
+     *
+     * @return list<string>
+     */
+    public static function regions(): array
+    {
+    }
+
+    /**
+     * The `uid` of each site the module is offered to without being given it, e.g. the sites of the client a
+     * private module is made for.
+     *
+     * @return list<string>
+     */
+    public static function sites(): array
     {
     }
 
@@ -214,7 +244,8 @@ abstract class Module extends \yii\base\Module
     }
 
     /**
-     * Whether the current site may enable the module: a regular module whose required modules are all enabled.
+     * Whether the current site may enable the module: a regular module the site was given or is named by, or
+     * a public one made for the region of the site, whose required modules are all enabled.
      */
     public static function isAvailable(): bool
     {

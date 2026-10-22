@@ -16,8 +16,8 @@ use Yii;
  * {@see blocks()}).
  *
  * A theme drawn for a shop would name the module in {@see requires()} (`['shop']`), and a theme made for one
- * client would say it is private in {@see visibility()} (`ThemeVisibility::Private`), so that only the sites
- * given the theme see it (`./yii theme/grant <host> <theme>`).
+ * client would say it is private in {@see visibility()} (`Visibility::Private` of `common\models\Visibility`)
+ * and name the sites of the client by their uid in {@see sites()}, so that only those sites see it.
  */
 class Theme extends BaseTheme
 {

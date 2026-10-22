@@ -78,8 +78,27 @@ abstract class Block extends Widget
      * `text` (with a `hint` shown under it), `textarea`, `number` (with `min`, `max`, `step` and, for a size, its `units`, see {@see Size}),
      * `code` (code in the `language` it names, `html`, `css` or `javascript`, edited with CodeMirror),
      * `toggle` (yes or no, a boolean), `choice` (with its `options`), `media`, `menu` (a menu of the site, held as its id, see
-     * `common\models\Menu`), `link` (see {@see Link}), `links` and `repeater` (see below). A control may take further options, which the editor receives as they are given
+     * `common\models\Menu`), `link` (see {@see Link}), `links`, `records` and `repeater` (see below). A control may take further options, which the editor receives as they are given
      * here. A value without a definition is edited in a plain text input under its own name.
+     *
+     * A list of records the user picks, like the products a shop puts forward, is one value
+     * (`public array $products = [];`, their ids in the order picked) edited with the `records` control. It names
+     * the `kind` of record it holds, as the content of a site names it (`page` for a page of any kind, `term`,
+     * `media`, see {@see references()}), and the `url` of the action that finds them, built with
+     * `Yii::$app->backendUrlManager` (`['/shop/product/search']`): given `q`, what was typed, and `exclude`, the
+     * ids picked so far with commas between them, it answers the first records that match, and given `ids` those
+     * records in that order, each as `{id, title, image, draft}` (the address of a thumbnail or null, and whether
+     * the site does not show it):
+     *
+     * ```php
+     * [
+     *     'name'  => 'products',
+     *     'type'  => 'records',
+     *     'label' => Yii::t('shop', 'Products'),
+     *     'kind'  => 'page',
+     *     'url'   => Yii::$app->backendUrlManager->createUrl(['/shop/product/search']),
+     * ],
+     * ```
      *
      * A list of items, like the features of a site, is one value (`public array $items = [];`) edited with the
      * `repeater` control, and the controls of the fields of one item name it as their `parent`:
@@ -97,7 +116,7 @@ abstract class Block extends Widget
      * of the item in the editor ("Item #1" while it is empty). The items are stored as a list of arrays keyed
      * by the names of the fields; the block checks each item before it shows it, as it does any value.
      *
-     * @return list<array{name: string, type: string, label: string, parent?: string, hint?: string, panel?: string, language?: string, options?: list<array{value: string, label: string}>}>
+     * @return list<array{name: string, type: string, label: string, parent?: string, hint?: string, panel?: string, language?: string, options?: list<array{value: string, label: string}>, kind?: string, url?: string}>
      */
     public static function controls(): array
     {
@@ -106,9 +125,10 @@ abstract class Block extends Widget
     /**
      * The values of the block that hold the id of a record of the site, and what kind of record each names:
      * `media` (a picture of the media library), `menu` or `page`, by the name of the value, or by `items.image`
-     * for a field of the items of a repeater. The demo of a theme carries them to another site under keys of
-     * their own (see `themes\Demo`). They are read from the controls, a `media` control naming a picture and a
-     * `menu` control a menu; a block with a value that names a page says so itself.
+     * for a field of the items of a repeater. A value may hold a list of them. The demo of a theme carries them to
+     * another site under keys of their own (see `themes\Demo`). They are read from the controls, a `media` control
+     * naming a picture, a `menu` control a menu and a `records` control the `kind` it names; a block with a value
+     * that names a page says so itself.
      *
      * @return array<string, string>
      */

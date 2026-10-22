@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var frontend\models\ResendVerificationEmailForm $model */
 
+use common\widgets\botguard\BotGuardFields;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="text-muted"><?= Yii::t('app', 'Enter your email to receive a new verification link.') ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'resend-verification-email-form']) ?>
+        <?= BotGuardFields::widget(['action' => 'verification-email']) ?>
         <?= $form->field($model, 'email')->textInput(['type' => 'email', 'autofocus' => true, 'autocomplete' => 'email']) ?>
         <?= Html::submitButton(Yii::t('app', 'Send the link'), ['class' => 'btn btn-primary w-100', 'name' => 'resend-verification-email-button']) ?>
         <?php ActiveForm::end() ?>

@@ -5,6 +5,7 @@ namespace kupisa\cli\controllers;
 use kupisa\cli\Files;
 use kupisa\cli\Lint;
 use kupisa\cli\Remote;
+use kupisa\cli\Requirements;
 use kupisa\cli\UploadController;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -19,6 +20,9 @@ class DevController extends UploadController
 
     /** @var array<string, string> The PHP files with a syntax error, which are not uploaded: the error by path. */
     private array $broken = [];
+
+    /** @var list<string> What builds on a module of the platform without naming it, as last written out. */
+    private array $missing = [];
 
     /**
      * Uploads everything once, then every file as soon as it is saved, and deletes on the site what is deleted
@@ -42,6 +46,7 @@ class DevController extends UploadController
         $this->broken = Lint::errors(array_keys($files));
 
         $this->reportErrors($this->broken);
+        $this->checkRequirements();
 
         if (!$this->upload($remote, $client)) {
             return ExitCode::UNAVAILABLE;
@@ -70,6 +75,7 @@ class DevController extends UploadController
             if ($changed !== [] || $deleted !== []) {
                 $this->check($changed, $deleted);
                 $this->report($changed, $deleted);
+                $this->checkRequirements();
                 $this->upload($remote, $client);
             }
         }
@@ -88,6 +94,21 @@ class DevController extends UploadController
         }
 
         $this->broken = [...$this->broken, ...Lint::errors($changed)];
+    }
+
+    /**
+     * Writes out what builds on a module of the platform without naming it in `requires()`, once, and again only
+     * when that changes.
+     */
+    private function checkRequirements(): void
+    {
+        $missing = Requirements::missing();
+
+        if ($missing !== $this->missing) {
+            $this->reportRequirements($missing);
+        }
+
+        $this->missing = $missing;
     }
 
     /**

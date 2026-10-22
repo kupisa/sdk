@@ -28,6 +28,12 @@ enum BlockGroup: string
     case Sections = 'sections';
 
     /**
+     * What a shop puts on its pages: lists of its products and the like (see the shop module). Empty, and not
+     * shown, while the site has no module that brings any.
+     */
+    case Shop = 'shop';
+
+    /**
      * The fields of a form (see the form module): a page of a form is built from them, and no other page.
      * Empty while the site has no module that brings any.
      */

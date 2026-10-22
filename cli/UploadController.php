@@ -63,6 +63,19 @@ abstract class UploadController extends Controller
     }
 
     /**
+     * Writes out the themes and modules that build on a module of the platform without naming it in `requires()`
+     * (see {@see Requirements}). They are uploaded all the same, but are to be fixed.
+     *
+     * @param list<string> $missing As {@see Requirements::missing()} gives them.
+     */
+    protected function reportRequirements(array $missing): void
+    {
+        foreach ($missing as $line) {
+            $this->stderr("Warning: $line\n", Console::FG_YELLOW);
+        }
+    }
+
+    /**
      * Writes out the syntax errors that keep files from being uploaded.
      *
      * @param array<string, string> $errors The error by the path of the file.

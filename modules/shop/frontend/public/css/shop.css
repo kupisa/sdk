@@ -1,0 +1,1781 @@
+/*
+ * The stylesheet of the shop on the site, loaded by ShopAsset. Built on the tokens of the site (see
+ * apps/frontend/public/css/src/_tokens.scss): the values of its own are tokens too, so a theme can change them.
+ * The breakpoints are those of the site (768px, 992px; see _breakpoints.scss), written out because a plain
+ * stylesheet cannot read them.
+ */
+
+:root {
+    --shop-card-image-ratio: 1 / 1;
+    --shop-thumb-size: 4.5rem;
+}
+
+/* The catalogue: the categories and the filters above the products on a phone; on a wide screen in a column on
+   the left. */
+.shop-index-layout {
+    display: grid;
+    gap: var(--grid-gap);
+}
+
+.shop-sidebar {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+}
+
+@media (min-width: 992px) {
+    .shop-index-layout {
+        grid-template-columns: 14rem minmax(0, 1fr);
+    }
+}
+
+/* The way to the other pages, in the middle under the products. */
+.shop-index-pager {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-5);
+}
+
+/* Above the products: which of them are shown on the left, the sorting on the right. */
+.shop-index-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.shop-index-count {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-index-sort {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+    font-size: var(--text-sm);
+}
+
+.shop-index-sort .form-control {
+    width: auto;
+}
+
+/* The cards of the products in a grid of two or three columns as the screen allows. */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gap);
+}
+
+@media (min-width: 768px) {
+    .shop-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* The products offered under a product ("You may also like") and those of the products block: four in a row on
+   a wide screen. */
+@media (min-width: 992px) {
+    .shop-grid-related,
+    .shop-grid-products {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* The products block (blocks/products): the title with the link to more on its right, then the cards. */
+.shop-products-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.shop-products-title {
+    margin: 0;
+}
+
+.shop-products-more {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* The carousel of the products block: the cards in one row that scrolls sideways and stops at a card, two and a
+   part of the next on a phone, so it is plain there are more, three on a tablet and four on a wide screen, as many as
+   the grid shows in a row; no scrollbar. On a wide screen an arrow on each side moves it by what is in view, and an
+   arrow at its end is hidden (see js/shop.js). The row leaves a little room above and below the cards, so a shadow
+   a theme gives them is not cut off. */
+.shop-carousel {
+    position: relative;
+}
+
+.shop-carousel-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - var(--grid-gap)) / 2.3);
+    gap: var(--grid-gap);
+    margin-block: calc(-1 * var(--space-3));
+    padding-block: var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.shop-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-carousel-track > * {
+    scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+    .shop-carousel-track {
+        grid-auto-columns: calc((100% - 2 * var(--grid-gap)) / 3);
+    }
+}
+
+@media (min-width: 992px) {
+    .shop-carousel-track {
+        grid-auto-columns: calc((100% - 3 * var(--grid-gap)) / 4);
+    }
+}
+
+.shop-carousel-arrow {
+    display: none;
+    position: absolute;
+    top: 40%;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-background);
+    color: var(--color-heading);
+    box-shadow: var(--shadow);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: color .15s, border-color .15s;
+}
+
+.shop-carousel-arrow:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.shop-carousel-arrow svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.shop-carousel-prev {
+    left: calc(-1 * var(--space-3));
+}
+
+.shop-carousel-next {
+    right: calc(-1 * var(--space-3));
+}
+
+@media (min-width: 992px) {
+    .shop-carousel-arrow {
+        display: inline-flex;
+    }
+}
+
+.shop-carousel-arrow[hidden] {
+    display: none;
+}
+
+.shop-products-note {
+    padding: var(--space-4);
+    border: 1px dashed var(--color-border);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+/* One product in the catalogue: its picture, cropped square, then its title and price. The whole card is the
+   link to the product. */
+.shop-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.shop-card-image {
+    position: relative;
+    aspect-ratio: var(--shop-card-image-ratio);
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+}
+
+.shop-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s;
+}
+
+.shop-card:hover .shop-card-image img {
+    transform: scale(1.03);
+}
+
+/* Whether the product is in stock, small, over its title. */
+.shop-card-availability {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.shop-card-title {
+    margin: 0;
+    font-size: var(--font-size);
+    font-weight: 600;
+}
+
+.shop-card-title a {
+    color: var(--color-heading);
+    text-decoration: none;
+}
+
+/* The link of the title covers the whole card, so a click anywhere on it opens the product. */
+.shop-card-title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.shop-card-title a:hover {
+    color: var(--color-link-hover);
+}
+
+/* The button of a card into the cart, or to the options of the product: at the foot of the card, so the buttons
+   of a row stand on one line, and above the link of the title that covers the card. */
+.shop-card-action {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+}
+
+/* The quantity and the button side by side; a fieldset, which would not get narrower than what is in it. */
+.shop-card-buy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.shop-card-buy .btn {
+    flex: 1;
+}
+
+/* The way to the options of a product takes the whole width of the card. */
+.shop-card-action > .btn {
+    width: 100%;
+}
+
+/* A price, with the old one struck through next to it while the product is on sale. */
+.shop-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    color: var(--color-text);
+}
+
+.shop-price s {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-price-sale {
+    color: var(--color-danger);
+    font-weight: 600;
+}
+
+/* The unit the price is for, "/ kg", after the price. */
+.shop-price-unit {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+/* The words under the price of a product that say it has no VAT in it ("excl. VAT"). */
+.shop-price-note {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+/* The short description of a product, under its availability and above its options: a few words in the size of
+   the text, the space of a paragraph between its parts. */
+.shop-product-short-description {
+    margin-bottom: var(--space-4);
+}
+
+.shop-product-short-description > * {
+    margin: 0 0 var(--space-2);
+}
+
+.shop-product-short-description > :last-child {
+    margin-bottom: 0;
+}
+
+/* The attributes of a product, under the form of the cart: a row per attribute, its name on the left and its
+   values on the right, a thin line between the rows. */
+/* The sections under a product (its description, its specifications, what a module adds): one under the other,
+   each under its title, or as tabs, where the script of the shop shows one at a time (`shop-tabs-ready`, set by
+   the script, so without it every section is there to read). */
+/* A link to a section (`#specifications`) stops below what stays at the top of the window. */
+.shop-product-sections,
+.shop-product-section {
+    scroll-margin-top: calc(var(--sticky-top) + var(--space-3));
+}
+
+.shop-product-section + .shop-product-section {
+    margin-top: var(--space-5);
+}
+
+.shop-product-section-title {
+    margin-bottom: var(--space-4);
+}
+
+.shop-tabs {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
+}
+
+.shop-tab {
+    flex-shrink: 0;
+    margin-bottom: -1px;
+    padding: var(--space-2) 0;
+    border-bottom: 2px solid transparent;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .15s, border-color .15s;
+}
+
+.shop-tab:hover {
+    color: var(--color-heading);
+}
+
+.shop-tab[aria-selected="true"] {
+    border-bottom-color: var(--color-primary);
+    color: var(--color-heading);
+}
+
+.shop-tabs-ready .shop-product-section-title {
+    display: none;
+}
+
+.shop-tabs-ready .shop-product-section + .shop-product-section {
+    margin-top: 0;
+}
+
+/* Under the line of the tabs the list needs no line of its own above it. */
+.shop-tabs-ready .shop-product-specifications {
+    border-top: 0;
+}
+
+.shop-product-specifications {
+    max-width: 40rem;
+    margin: 0;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+}
+
+.shop-product-specifications > div {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.shop-product-specifications dt {
+    color: var(--color-text-muted);
+}
+
+.shop-product-specifications dd {
+    margin: 0;
+}
+
+/* The badges on the picture of a card: the tags of the product shown as badges, then "Sold out", one under
+   the other in the corner. */
+.shop-card-badges {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+}
+
+.shop-card-badge {
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+/* A tag shown as a badge ("New"), in the colours of the tag (`Tag::badgeStyle()`). */
+.shop-badge {
+    background: var(--shop-badge-background, var(--color-primary));
+    color: var(--shop-badge-color, var(--color-primary-contrast));
+}
+
+/* The badges of a product above its title. */
+.shop-product-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-2);
+}
+
+/* The categories next to the catalogue: a row of badges above the grid on a phone, a list on a wide screen. */
+.shop-categories .nav {
+    gap: var(--space-2);
+}
+
+.shop-categories .nav a {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    font-size: var(--text-sm);
+}
+
+.shop-categories .nav a.active {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+}
+
+@media (min-width: 992px) {
+    .shop-categories .nav {
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    .shop-categories .nav a {
+        padding: 0;
+        background: none;
+        font-size: var(--font-size);
+    }
+}
+
+/* The filters of the catalogue (see views/product/_filters.php): on a phone folded behind the "Filters" button
+   and, once open, a panel over the page along the left edge with its own head and the way to close it; on a wide
+   screen open in the column next to the products, the button and the head out of sight. */
+.shop-filters-details > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    list-style: none;
+    cursor: pointer;
+}
+
+.shop-filters-details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.shop-filters {
+    display: grid;
+    align-content: start;
+}
+
+@media (max-width: 991.98px) {
+    .shop-filters {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 100;
+        width: min(85vw, 22rem);
+        padding: var(--space-3);
+        overflow-y: auto;
+        background: var(--color-background);
+        box-shadow: var(--shadow);
+    }
+}
+
+.shop-filters-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-2);
+}
+
+@media (min-width: 992px) {
+    .shop-filters-details > summary,
+    .shop-filters-head {
+        display: none;
+    }
+}
+
+.shop-filters-title {
+    font-weight: 600;
+}
+
+.shop-filters-close {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-muted);
+    font-size: var(--text-2xl);
+    line-height: 1;
+    cursor: pointer;
+    transition: color .15s;
+}
+
+.shop-filters-close:hover {
+    color: var(--color-text);
+}
+
+/* One filter: its name, which folds and unfolds it (a plus turning into a minus at its right), then its values as
+   checkboxes with the number of products next to each, greyed out while a value would give none. A value shows
+   its colour or its picture in front of its name when it has one. */
+.shop-filter {
+    border-top: 1px solid var(--color-border);
+}
+
+.shop-filter > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.shop-filter > summary::-webkit-details-marker {
+    display: none;
+}
+
+.shop-filter > summary::after {
+    content: "+";
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.shop-filter[open] > summary::after {
+    content: "−";
+}
+
+.shop-filter-values {
+    display: grid;
+    gap: var(--space-1);
+    padding-bottom: var(--space-3);
+}
+
+/* The values beyond the first six, folded behind "View more" (see views/product/_filters.php): the summary reads
+   "View less" once they are unfolded. */
+.shop-filter-more {
+    display: grid;
+    gap: var(--space-1);
+}
+
+.shop-filter-more > summary {
+    list-style: none;
+    color: var(--color-link);
+    font-size: var(--text-sm);
+    cursor: pointer;
+}
+
+.shop-filter-more > summary::-webkit-details-marker {
+    display: none;
+}
+
+.shop-filter-more > summary:hover {
+    color: var(--color-link-hover);
+}
+
+.shop-filter-more[open] > summary {
+    order: 1;
+}
+
+.shop-filter-more:not([open]) .shop-filter-more-close,
+.shop-filter-more[open] .shop-filter-more-open {
+    display: none;
+}
+
+.shop-filter-value {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+}
+
+.shop-filter-value.disabled {
+    color: var(--color-text-muted);
+    cursor: default;
+}
+
+.shop-filter-count {
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-filter-swatch {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+}
+
+.shop-filter-picture {
+    border-radius: var(--radius-sm);
+}
+
+.shop-filter-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shop-filter-price-fields {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-bottom: var(--space-3);
+}
+
+.shop-filter-price-fields input {
+    min-width: 0;
+}
+
+/* The filters chosen, as chips above the products, each the way to take it off, and the way to clear them all
+   (see views/product/_active-filters.php). */
+.shop-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.shop-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: background-color .15s;
+}
+
+.shop-filter-chip:hover {
+    background: var(--color-border);
+    color: var(--color-text);
+}
+
+.shop-filter-reset {
+    font-size: var(--text-sm);
+}
+
+/* Whether a product is there, as the visitor reads it (see Variant::availabilityState()). */
+.shop-availability-in-stock {
+    color: var(--color-success);
+}
+
+.shop-availability-on-order,
+.shop-availability-sold-out {
+    color: var(--color-text-muted);
+}
+
+/* One product: the gallery on the left, what it costs and whether it is there on the right, with more room
+   between the two on a wide screen, so the information does not crowd the picture. */
+@media (min-width: 992px) {
+    .shop-product > .row {
+        --grid-gap: var(--space-5);
+    }
+}
+
+.shop-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* The large picture is the button that opens the lightbox, which the magnifier in its corner says. */
+.shop-gallery-main {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    aspect-ratio: var(--shop-card-image-ratio);
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    cursor: zoom-in;
+}
+
+.shop-gallery-zoom {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-background);
+    color: var(--color-heading);
+    transition: background-color .15s, border-color .15s;
+}
+
+.shop-gallery-main:hover .shop-gallery-zoom {
+    border-color: var(--color-text-muted);
+    background: var(--color-surface);
+}
+
+.shop-gallery-zoom svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.shop-gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shop-gallery-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+/* A picture alone needs no small one to switch to. */
+.shop-gallery-thumbs button:only-child {
+    display: none;
+}
+
+.shop-gallery-thumbs button {
+    width: var(--shop-thumb-size);
+    height: var(--shop-thumb-size);
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.shop-gallery-thumbs button.active,
+.shop-gallery-thumbs button:hover {
+    border-color: var(--color-primary);
+}
+
+.shop-gallery-thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shop-product-price {
+    font-size: var(--text-2xl);
+}
+
+.shop-product-sku {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+/* An option of a product: its name, then its values to pick one from. The radio button itself is not shown; its
+   label is: a box with the name of the value, all of them at least as wide as a short one ("S", "38"), the chosen
+   one filled with the primary colour; a colour as a circle and a picture as a small square, the chosen one with a
+   ring around it. */
+.shop-option {
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    border: 0;
+}
+
+.shop-option-name {
+    margin-bottom: var(--space-2);
+    padding: 0;
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.shop-option-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.shop-option-value input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.shop-option-value span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.5rem;
+    padding: .625rem var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-background);
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.25;
+    cursor: pointer;
+    transition: border-color .15s, background-color .15s, color .15s, box-shadow .15s, outline-color .15s;
+}
+
+.shop-option-value span:hover {
+    background: var(--color-surface);
+}
+
+.shop-option-value input:checked + span {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+}
+
+.shop-option-value input:focus-visible + span {
+    box-shadow: 0 0 0 3px var(--color-focus);
+}
+
+.shop-option-select {
+    width: auto;
+    min-width: 10rem;
+}
+
+/* A colour and a picture: a thin line keeps a light one apart from the page, and the chosen one gets a ring a
+   little away from it. */
+.shop-option-color .shop-option-values,
+.shop-option-image .shop-option-values {
+    gap: var(--space-3);
+}
+
+.shop-option-value span.shop-option-swatch,
+.shop-option-value span.shop-option-picture {
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-heading) 15%, transparent);
+}
+
+.shop-option-value span.shop-option-swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.shop-option-value span.shop-option-picture {
+    width: var(--shop-thumb-size);
+    height: var(--shop-thumb-size);
+}
+
+.shop-option-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.shop-option-value span.shop-option-swatch:hover,
+.shop-option-value span.shop-option-picture:hover {
+    outline-color: var(--color-border);
+}
+
+.shop-option-value input:checked + .shop-option-swatch,
+.shop-option-value input:checked + .shop-option-picture {
+    background-color: inherit;
+    outline-color: var(--color-primary);
+}
+
+/* The name of a colour or a picture, above it while the mouse rests on it or it has the focus (`data-tooltip`). */
+.shop-option-value[data-tooltip] {
+    position: relative;
+}
+
+.shop-option-value[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + var(--space-2));
+    left: 50%;
+    z-index: 1;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-heading);
+    color: var(--color-background);
+    font-size: var(--text-sm);
+    line-height: 1.25;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%);
+    transition: opacity .15s;
+}
+
+.shop-option-value[data-tooltip]:hover::after,
+.shop-option-value[data-tooltip]:has(input:focus-visible)::after {
+    opacity: 1;
+}
+
+.shop-option-value input:focus-visible + .shop-option-swatch,
+.shop-option-value input:focus-visible + .shop-option-picture {
+    box-shadow: 0 0 0 5px var(--color-focus);
+}
+
+/* The form that puts a product in the cart: the quantity next to the button, disabled while the variant shown
+   cannot be bought, and both disabled in the preview of the editor (a fieldset, so the script that enables the
+   button of a variant cannot enable it there). */
+.shop-add-to-cart {
+    display: flex;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    border: 0;
+}
+
+/* The button fills what the quantity leaves of the row: the one thing on the page to press. */
+.shop-add-to-cart .btn {
+    flex: 1 0 auto;
+}
+
+.shop-add-to-cart .btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* The quantities the product is ordered in, under the form: "Minimum order: 5". */
+.shop-product-quantity-note {
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+/* The cart (see views/cart/index.php), clean like Shopify's: a line per variant, the picture a square with the
+   corners of the theme, the title with the variant, the price, the stepper of the quantity, what the line costs
+   and the way to take the line out; on a wide screen all of it in one row, the amounts on the right and
+   "Remove" at the end, on a phone the price and the stepper under the title, next to the picture. Under the lines the subtotal, the
+   way to the checkout and back to the shop, on the right of a wide screen and across a phone. A line being
+   refreshed fades a little until the answer comes. */
+.shop-cart-lines {
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+}
+
+.shop-cart-line {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-areas:
+        "image details details details"
+        "image price price price"
+        "image quantity remove total";
+    column-gap: var(--space-3);
+    row-gap: var(--space-2);
+    align-items: start;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+    transition: opacity .15s;
+}
+
+.shop-cart-refreshing .shop-cart-line {
+    opacity: .6;
+}
+
+.shop-cart-image {
+    grid-area: image;
+}
+
+.shop-cart-image img {
+    width: 5rem;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.shop-cart-details {
+    grid-area: details;
+    min-width: 0;
+}
+
+.shop-cart-title {
+    font-weight: 500;
+    color: var(--color-heading);
+    text-decoration: none;
+}
+
+.shop-cart-title:hover {
+    text-decoration: underline;
+}
+
+.shop-cart-variant {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-cart-price {
+    grid-area: price;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-cart-quantity {
+    grid-area: quantity;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+/* The quantity with − and + on its sides, on the page of a product and on a line of the cart (see shop.js). */
+.shop-stepper {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.shop-stepper .form-control {
+    width: 3rem;
+    padding: 0.375rem 0;
+    border: 0;
+    border-radius: 0;
+    text-align: center;
+    -moz-appearance: textfield;
+}
+
+.shop-stepper .form-control::-webkit-outer-spin-button,
+.shop-stepper .form-control::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.shop-stepper .form-control:focus {
+    box-shadow: none;
+}
+
+.shop-stepper-button {
+    width: 2.25rem;
+    border: 0;
+    background: var(--color-background);
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: 1;
+    transition: color .15s, background-color .15s;
+}
+
+.shop-stepper-button:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.shop-cart-remove {
+    grid-area: remove;
+    align-self: center;
+    justify-self: start;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-decoration: underline;
+    transition: color .15s;
+}
+
+.shop-cart-remove:hover {
+    color: var(--color-danger);
+}
+
+.shop-cart-total {
+    grid-area: total;
+    align-self: center;
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: right;
+}
+
+/* A wide screen: everything of a line in one row, level with the picture and the title, the amounts on the right. */
+@media (min-width: 768px) {
+    .shop-cart-line {
+        grid-template-columns: auto 1fr auto auto auto auto;
+        grid-template-areas: "image details price quantity total remove";
+        column-gap: var(--space-4);
+        align-items: center;
+    }
+
+    .shop-cart-price {
+        color: var(--color-text);
+        font-size: inherit;
+        text-align: right;
+    }
+
+    .shop-cart-total {
+        min-width: 6rem;
+    }
+
+    .shop-cart-summary {
+        max-width: 22rem;
+    }
+}
+
+.shop-cart-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    margin-left: auto;
+    width: 100%;
+}
+
+.shop-cart-subtotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: var(--text-lg);
+    font-weight: 500;
+}
+
+/* The words next to the subtotal that say it has no VAT in it. */
+.shop-cart-tax {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 400;
+}
+
+/* A discount under the subtotal of the cart: its label and what it takes off. */
+.shop-cart-discount {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--color-success);
+}
+
+/* The discount code, in the summary of the cart and of the checkout (views/cart/_discount-code.php): the field
+   with "Apply" next to it, or the code applied as a chip with the way to remove it. */
+.shop-discount-code {
+    margin-bottom: var(--space-3);
+}
+
+.shop-discount-code-field {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.shop-discount-code-field .form-control {
+    flex: 1;
+    min-width: 0;
+}
+
+.shop-discount-code-applied {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.shop-discount-code-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-success-subtle);
+    color: var(--color-success);
+    font-weight: 500;
+}
+
+.shop-discount-code-chip svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.shop-discount-code-remove {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-decoration: underline;
+    transition: color .15s;
+}
+
+.shop-discount-code-remove:hover {
+    color: var(--color-danger);
+}
+
+.shop-discount-code-error {
+    margin: var(--space-1) 0 0;
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+}
+
+.shop-cart-note {
+    margin: 0 0 var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-cart-continue {
+    align-self: center;
+    font-size: var(--text-sm);
+}
+
+/* The button that updates the cart is hidden by the script (the `hidden` attribute), whatever a button displays as. */
+.shop-cart-update[hidden] {
+    display: none;
+}
+
+.shop-cart-empty {
+    max-width: 30rem;
+    margin: var(--space-5) auto;
+    text-align: center;
+}
+
+/* The cart in the header: the icon with the number of pieces in its corner. */
+.shop-cart-icon {
+    position: relative;
+    display: inline-flex;
+}
+
+.shop-cart-count {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.625rem;
+    min-width: 1.125rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.125rem;
+    text-align: center;
+}
+
+/* The checkout (see views/checkout/index.php), built like Shopify's: the form on the left and the summary of the
+   cart on the right on a wide screen, the whole right side grey from the header down to the footer and out to
+   the edge of the window (a shadow of the surface colour spread out and clipped to the sides, so nothing scrolls
+   sideways), the summary first on a phone as a grey band; the form in sections, the ways of delivery and
+   payment as rows with a radio, the price on the right. The parts being refreshed fade a little until the
+   answer comes. The page fills the window down to its foot (the `main-fill` of the focused layout), the
+   layout growing with it, so the grey side never stops short. The form is a grid of areas: the main column,
+   the summary and the foot (the policies, the button and the links); on a wide screen the summary is the right
+   column beside both, on a phone the summary stands folded at the top (`shop-checkout-top`, a details) and
+   open between the main column and the foot, as a grey band. */
+.shop-checkout {
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-checkout > .btn {
+    align-self: flex-start;
+}
+
+.shop-checkout-layout {
+    flex: 1 0 auto;
+    display: grid;
+    grid-template-areas:
+        "top"
+        "main"
+        "summary"
+        "foot";
+    gap: var(--space-4);
+}
+
+.shop-checkout-top {
+    grid-area: top;
+}
+
+.shop-checkout-main {
+    grid-area: main;
+}
+
+.shop-checkout-summary {
+    grid-area: summary;
+}
+
+.shop-checkout-foot {
+    grid-area: foot;
+    padding-bottom: var(--space-5);
+}
+
+/* The folded summary of a phone: a grey band with the total on its bar, the chevron turning as it opens. */
+.shop-checkout-top {
+    padding: var(--space-3) 0;
+    background: var(--color-surface);
+    box-shadow: 0 0 0 100vw var(--color-surface);
+    clip-path: inset(0 -100vw);
+}
+
+.shop-checkout-top > summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+}
+
+.shop-checkout-top > summary::-webkit-details-marker {
+    display: none;
+}
+
+.shop-checkout-top-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-link);
+}
+
+.shop-checkout-top-label svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform .15s;
+}
+
+.shop-checkout-top[open] .shop-checkout-top-label svg {
+    transform: rotate(180deg);
+}
+
+.shop-checkout-top-total {
+    font-size: var(--text-lg);
+    font-weight: 500;
+}
+
+.shop-checkout-top-body {
+    margin-top: var(--space-3);
+}
+
+[data-checkout-part] {
+    transition: opacity .15s;
+}
+
+.shop-checkout-refreshing [data-checkout-part] {
+    opacity: .6;
+}
+
+.shop-checkout-main {
+    padding-top: var(--space-5);
+}
+
+/* On a phone the folded summary sits right under the header and the gap of the grid is space enough. */
+@media (max-width: 991.98px) {
+    .shop-checkout-main {
+        padding-top: 0;
+    }
+}
+
+.shop-checkout-main h1 {
+    margin-bottom: var(--space-4);
+}
+
+.shop-checkout-summary {
+    padding: var(--space-4) 0;
+    background: var(--color-surface);
+    box-shadow: 0 0 0 100vw var(--color-surface);
+    clip-path: inset(0 -100vw);
+}
+
+@media (min-width: 992px) {
+    .shop-checkout-layout {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        grid-template-areas:
+            "main summary"
+            "foot summary";
+        column-gap: var(--space-5);
+    }
+
+    .shop-checkout-top {
+        display: none;
+    }
+
+    .shop-checkout-foot {
+        padding-right: var(--space-3);
+    }
+
+    .shop-checkout-main {
+        padding-right: var(--space-3);
+    }
+
+    .shop-checkout-summary {
+        padding: var(--space-5) 0 var(--space-5) var(--space-5);
+        border-left: 1px solid var(--color-border);
+        clip-path: inset(0 -100vw 0 0);
+    }
+
+    /* The summary stays in view below whatever stays at the top of the window (the admin bar, a header). */
+    .shop-checkout-summary-inner {
+        position: sticky;
+        top: calc(var(--sticky-top) + var(--space-4));
+    }
+}
+
+.shop-checkout-section {
+    margin-bottom: var(--space-4);
+}
+
+/* The checkbox that stands for a whole section (the billing address) needs no space of its own below it; the
+   part it unfolds keeps its distance. */
+.shop-checkout-section > .checkbox {
+    margin-bottom: 0;
+}
+
+.shop-checkout-section > [data-checkout-section] {
+    margin-top: var(--space-3);
+}
+
+.shop-checkout-section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.shop-checkout-methods {
+    display: grid;
+    gap: var(--space-2);
+}
+
+.shop-checkout-method {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.shop-checkout-method:has(input:checked) {
+    border-color: var(--color-primary);
+}
+
+.shop-checkout-method input {
+    grid-row: span 2;
+}
+
+.shop-checkout-method-name {
+    font-weight: 500;
+}
+
+.shop-checkout-method-description {
+    grid-column: 2;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-checkout-method-price {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    white-space: nowrap;
+}
+
+/* The end of the row of a way of payment: its pictures (the brands of the cards it takes), then its price. */
+.shop-checkout-method-end {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.shop-checkout-method-logos {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.shop-checkout-method-logo svg {
+    display: block;
+    width: 2.375rem;
+    height: 1.5rem;
+}
+
+.shop-checkout-method-more {
+    padding: 0 var(--space-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.375rem;
+}
+
+/* A way of payment with a body (the fields of a card): the body opens under it while it is chosen, like an
+   accordion, inside the same frame. */
+.shop-checkout-option:has(.shop-checkout-method-body) {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: border-color .15s;
+}
+
+.shop-checkout-option:has(.shop-checkout-method-body):has(input:checked) {
+    border-color: var(--color-primary);
+}
+
+.shop-checkout-option:has(.shop-checkout-method-body) > .shop-checkout-method {
+    border: 0;
+    border-radius: 0;
+}
+
+.shop-checkout-method-body {
+    padding: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.shop-checkout-option:not(:has(input:checked)) > .shop-checkout-method-body {
+    display: none;
+}
+
+.shop-checkout-lines {
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    list-style: none;
+}
+
+.shop-checkout-line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* The picture of a line is a square, the picture filling it, with the corners the theme gives. */
+.shop-checkout-line img {
+    flex: none;
+    width: 3.5rem;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.shop-checkout-line-title {
+    flex: 1;
+    line-height: 1.35;
+}
+
+.shop-checkout-line-quantity {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+}
+
+.shop-checkout-line-variant {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-checkout-line-total {
+    white-space: nowrap;
+}
+
+.shop-checkout-amounts {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: var(--space-1);
+    margin: 0 0 var(--space-3);
+}
+
+.shop-checkout-amounts dd {
+    margin: 0;
+    text-align: right;
+}
+
+.shop-checkout-grand {
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-lg);
+    font-weight: 500;
+}
+
+/* The VAT named under a total that includes it ("Including VAT 20%"): small and grey. */
+.shop-checkout-tax {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-checkout-submit {
+    width: 100%;
+}
+
+/* The pages of the site under the button, in place of the footer: a row of small links. */
+.shop-checkout-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+}
+
+.shop-checkout-links a {
+    color: var(--color-text-muted);
+}
+
+.shop-checkout-links a:hover {
+    color: var(--color-text);
+}
+
+/* The page after the order (see views/checkout/thank-you.php), laid out like the checkout: the tick and the
+   greeting, the cards of the order on the left, the summary on the grey right side. */
+/* The "Thank you" page has no foot of its own: its main column keeps the space below. */
+.shop-thank-you .shop-checkout-main {
+    padding-bottom: var(--space-5);
+}
+
+.shop-thank-you-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.shop-thank-you-head h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+}
+
+.shop-thank-you-tick {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-success);
+}
+
+.shop-thank-you-number {
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-thank-you-card {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+.shop-thank-you-card h2 {
+    margin-bottom: var(--space-2);
+}
+
+.shop-thank-you-instructions {
+    border-color: var(--color-primary);
+}
+
+.shop-thank-you-details {
+    display: grid;
+    gap: var(--space-3) var(--space-4);
+    margin: 0;
+}
+
+@media (min-width: 576px) {
+    .shop-thank-you-details {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.shop-thank-you-details dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.shop-thank-you-details dd {
+    margin: 0;
+}
+
+/* The sections of the shop in the account area of the site (views/account): the orders as a table, one of them
+   with the cards of the "Thank you" page one under the other, and the addresses as a form, the fields of the
+   billing address folded away while it is the delivery address (no script). */
+.shop-orders {
+    width: 100%;
+    margin: 0 0 var(--space-3);
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.shop-orders th,
+.shop-orders td {
+    padding: var(--space-2) var(--space-2) var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.shop-orders th {
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.shop-orders-total {
+    text-align: right;
+    padding-right: 0;
+}
+
+.shop-orders-link {
+    font-weight: 500;
+}
+
+.shop-account-order .shop-thank-you-number {
+    margin-bottom: var(--space-1);
+}
+
+.shop-account-order-status {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
+}
+
+.shop-account-order .shop-thank-you-card {
+    margin-bottom: var(--space-3);
+}
+
+.shop-account-order .shop-checkout-amounts {
+    margin-bottom: 0;
+}
+
+.shop-billing:has(input[type="checkbox"]:checked) .shop-billing-fields {
+    display: none;
+}

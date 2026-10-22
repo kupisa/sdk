@@ -6,6 +6,7 @@ declare(strict_types=1);
 /** @var common\models\LoginForm $model */
 
 use common\helpers\Signup;
+use common\widgets\botguard\BotGuardFields;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="text-muted"><?= Yii::t('app', 'Enter your email address and password to continue.') ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']) ?>
+        <?= BotGuardFields::widget(['action' => 'login']) ?>
         <?= $form->field($model, 'email')->textInput(['type' => 'email', 'autofocus' => true, 'autocomplete' => 'email']) ?>
         <?= $form->field($model, 'password')->passwordInput(['autocomplete' => 'current-password']) ?>
         <?= $form->field($model, 'rememberMe')->checkbox() ?>

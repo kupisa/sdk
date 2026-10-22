@@ -751,6 +751,31 @@
                 "class": ""
             }
         },
+        "booking": {
+            "module": "appointment",
+            "label": "Booking",
+            "group": "sections",
+            "values": {
+                "title": {
+                    "type": "text",
+                    "label": "Title",
+                    "default": ""
+                },
+                "text": {
+                    "type": "textarea",
+                    "label": "Text",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
         "example": {
             "module": "example",
             "label": "Greeting",
@@ -839,6 +864,14 @@
                         {
                             "value": "url",
                             "label": "Address"
+                        },
+                        {
+                            "value": "date",
+                            "label": "Date"
+                        },
+                        {
+                            "value": "time",
+                            "label": "Time"
                         }
                     ],
                     "default": "text"
@@ -1003,6 +1036,84 @@
                 "class": ""
             }
         },
+        "file": {
+            "module": "form",
+            "label": "Files",
+            "group": "form",
+            "values": {
+                "multiple": {
+                    "type": "toggle",
+                    "label": "Several files",
+                    "default": false
+                },
+                "max_files": {
+                    "type": "number",
+                    "label": "Most files",
+                    "hint": "When several files are allowed.",
+                    "min": 1,
+                    "max": 10,
+                    "step": 1,
+                    "default": 5
+                },
+                "max_size": {
+                    "type": "number",
+                    "label": "Largest file (MB)",
+                    "min": 1,
+                    "max": 20,
+                    "step": 1,
+                    "default": 10
+                },
+                "images": {
+                    "type": "toggle",
+                    "label": "Images (JPG, PNG, WebP, GIF)",
+                    "default": true
+                },
+                "pdf": {
+                    "type": "toggle",
+                    "label": "PDF",
+                    "default": false
+                },
+                "documents": {
+                    "type": "toggle",
+                    "label": "Documents (Word, ODT, RTF, TXT)",
+                    "default": false
+                },
+                "spreadsheets": {
+                    "type": "toggle",
+                    "label": "Spreadsheets (Excel, ODS, CSV)",
+                    "default": false
+                },
+                "label": {
+                    "type": "text",
+                    "label": "Label",
+                    "default": ""
+                },
+                "name": {
+                    "type": "text",
+                    "label": "Name",
+                    "hint": "What the value is called in the entries and the email, e.g. email. Made from the label when left empty.",
+                    "default": ""
+                },
+                "required": {
+                    "type": "toggle",
+                    "label": "Required",
+                    "default": false
+                },
+                "hint": {
+                    "type": "text",
+                    "label": "Hint",
+                    "default": ""
+                }
+            },
+            "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "sm",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
         "submit": {
             "module": "form",
             "label": "Submit button",
@@ -1046,7 +1157,7 @@
         "reviews": {
             "module": "review",
             "label": "Latest reviews",
-            "group": "sections",
+            "group": "shop",
             "values": {
                 "title": {
                     "type": "text",
@@ -1074,6 +1185,49 @@
                 }
             },
             "references": {},
+            "settings": {
+                "title": "",
+                "spacing": "lg",
+                "padding": "none",
+                "anchor": "",
+                "class": ""
+            }
+        },
+        "products": {
+            "module": "shop",
+            "label": "Products",
+            "group": "shop",
+            "values": {
+                "title": {
+                    "default": ""
+                },
+                "source": {
+                    "default": "picked"
+                },
+                "products": {
+                    "default": []
+                },
+                "category": {
+                    "default": ""
+                },
+                "count": {
+                    "default": 8
+                },
+                "link": {
+                    "default": {
+                        "label": "",
+                        "url": "",
+                        "new_tab": false
+                    }
+                },
+                "layout": {
+                    "default": "grid"
+                }
+            },
+            "references": {
+                "products": "page",
+                "category": "term"
+            },
             "settings": {
                 "title": "",
                 "spacing": "lg",
@@ -1154,6 +1308,7 @@
                 "text",
                 "media",
                 "sections",
+                "shop",
                 "other"
             ]
         },
@@ -1179,6 +1334,7 @@
                 "text",
                 "media",
                 "sections",
+                "shop",
                 "other"
             ]
         },
@@ -1197,6 +1353,7 @@
                 "text",
                 "media",
                 "sections",
+                "shop",
                 "other"
             ]
         },
@@ -1243,11 +1400,19 @@
                 "text",
                 "media",
                 "sections",
+                "shop",
                 "other"
             ]
         }
     },
     "taxonomies": {
+        "appointment_category": {
+            "module": "appointment",
+            "hierarchy": "none",
+            "public": false,
+            "meta": {},
+            "references": {}
+        },
         "blog_category": {
             "module": "blog",
             "hierarchy": "tree",

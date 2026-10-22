@@ -7,6 +7,9 @@ see the code of the platform; what you may build on is in the SDK, in the direct
 - `docs/theme.md`: how a theme is built. Read it before you write or change a theme.
 - `docs/module.md`: how a module is built. Read it before you write or change a module.
 - `docs/blocks.md`: how a block is built. Read it before you write or change a block.
+- `docs/shop.md`: the shop, a core module of the platform, and how a module or a theme builds on it. Read it
+  before you write anything that touches the products, the cart or the orders, and only for a site that has
+  the shop (see below).
 - `docs/content.md`: how the content of a site (its pages, menus, terms, pictures and areas) is written as files
   in `content/`. Read it before you write or change content.
 - `examples/themes/starter/`: a small, complete theme. A new theme starts as a copy of it.
@@ -14,12 +17,14 @@ see the code of the platform; what you may build on is in the SDK, in the direct
 - `reference/content.json`: what content is written with, as data: every block of the platform and of its
   modules with its values, the areas, the kinds of pages and the taxonomies.
 - `stubs/`: the public classes of the platform, by namespace (`stubs/frontend/blocks/Block.php` is
-  `frontend\blocks\Block`). The comments and the signatures are real; the bodies of the methods are left out,
+  `frontend\blocks\Block`), the shop among them (`stubs/modules/shop/`). The comments and the signatures are real; the bodies of the methods are left out,
   so an empty method does not mean it does nothing.
 - `frontend/`: the views of the site and of its blocks as the platform draws them, and its design tokens
   (`frontend/public/css/src/_tokens.scss`).
+- `modules/shop/`: the views of the shop on the site and its stylesheet, which a theme replaces and styles.
 
-`stubs/`, `examples/`, `reference/` and `frontend/` come from the platform. Read them, never edit them.
+`stubs/`, `examples/`, `reference/`, `frontend/` and `modules/` come from the platform. Read them, never edit
+them.
 
 ## The sites this repository is for
 
@@ -28,8 +33,12 @@ connect`), each by its host name with what it is: its `uid`, `name`, `region`, `
 `modules` it enabled, the `core` ones (`shop`) and the `regular` ones; `current` names the selected site. Read
 it before you build anything, and build for what the site has:
 
-- A module that builds on another one names it in `requires()`, and is only offered to a site that enabled it:
-  build around the shop only for a site whose core modules have `shop`, and say so when the site has not.
+- **The shop only where the site has it.** Use the shop (a class of `modules\shop\…`, a hook of the shop, the
+  products or prices in a block) only when the `core` modules of the selected site name `shop`. When they do
+  not, build nothing around it, and tell the developer the site is no shop. A theme or a module that uses the
+  shop names it in `requires()` (`['shop']`), so it is never given to a site without it; see `docs/shop.md`.
+- A module that builds on another module names it in `requires()` the same way, and is offered only to a site
+  that has it.
 - The texts are translated into the `language` of the site (see "Rules of the code" below).
 - The file may be out of date: `vendor/bin/kupisa info` asks the selected site again and writes the file. Run it
   when what you read there does not match what you are told.

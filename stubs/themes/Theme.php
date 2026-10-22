@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace themes;
 
+use common\models\Visibility;
 use frontend\blocks\Block;
 use modules\Modules;
 use ReflectionClass;
@@ -57,9 +58,30 @@ abstract class Theme
     }
 
     /**
-     * Who the theme is offered to: every site, or only the sites that were given it (see {@see Themes::grant()}).
+     * Who the theme is offered to: every site (or every site of its {@see regions()}), or, when it is private,
+     * only the sites that were given it (see {@see Themes::grant()}) and those it names (see {@see sites()}).
      */
-    public static function visibility(): ThemeVisibility
+    public static function visibility(): Visibility
+    {
+    }
+
+    /**
+     * The ISO 3166-1 codes of the countries whose sites the theme is offered to (see `Site::$region`), e.g.
+     * `['CZ', 'SK']`; every site when empty. A site given the theme or named by it gets it wherever it is.
+     *
+     * @return list<string>
+     */
+    public static function regions(): array
+    {
+    }
+
+    /**
+     * The `uid` of each site the theme is offered to without being given it, e.g. the sites of the client a
+     * private theme is made for.
+     *
+     * @return list<string>
+     */
+    public static function sites(): array
     {
     }
 
@@ -160,8 +182,8 @@ abstract class Theme
     }
 
     /**
-     * Whether the current site may pick the theme: a public theme, or a private one the site was given, whose
-     * required modules are all enabled.
+     * Whether the current site may pick the theme: the site was given it or is named by it, or the theme is
+     * public and made for the region of the site; and the modules it requires are all enabled.
      */
     public static function isAvailable(): bool
     {

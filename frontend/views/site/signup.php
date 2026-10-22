@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var frontend\models\SignupForm $model */
 
+use common\widgets\botguard\BotGuardFields;
 use frontend\models\SignupForm;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -32,6 +33,7 @@ $acceptLabel = match (array_keys($policies)) {
         <p class="text-muted"><?= Yii::t('app', 'Fill out the fields below to get started.') ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'form-signup']) ?>
+        <?= BotGuardFields::widget(['action' => 'signup']) ?>
         <?= $form->field($model, 'email')->textInput(['type' => 'email', 'autofocus' => true, 'autocomplete' => 'email']) ?>
         <?= $form->field($model, 'password')->passwordInput(['autocomplete' => 'new-password']) ?>
         <?php if ($policies !== []): ?>

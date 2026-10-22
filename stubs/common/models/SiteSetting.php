@@ -12,8 +12,10 @@ use yii\base\InvalidConfigException;
 /**
  * A setting of the current site: a name/value pair such as `email` => `shop@example.com`.
  *
- * Code reads settings with {@see get()} and writes them with {@see set()}. Forms in the backend group
- * several settings into one page (see `backend\models\GeneralSettingsForm`). A secret of the site (the secret
+ * Code reads settings with {@see get()} and writes them with {@see set()}. The settings of the site are read
+ * in one query the first time one is asked for and kept for the rest of the request (see
+ * `common\components\CurrentSite::settings()`), so a setting may be read as often as needed. Forms in the
+ * backend group several settings into one page (see `backend\models\GeneralSettingsForm`). A secret of the site (the secret
  * key of a payment provider) is kept encrypted with {@see setSecret()} and read with {@see getSecret()}, so the
  * database alone never gives it away.
  *

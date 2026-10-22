@@ -72,7 +72,8 @@ class Module extends BaseModule
   - `taxonomies()`: its taxonomies, by type: `['realizations_kind' => Kind::class]`.
   - `roles()`: roles of its own, or more for a role of the platform:
     `['editor' => ['capabilities' => ['realizations']]]`.
-  - `requires()`: the modules it needs (`['shop']`); it is offered only to a site that has them.
+  - `requires()`: the modules it needs (`['shop']`); it is offered only to a site that has them. A module that
+    uses anything of the shop always names it (see `docs/shop.md`).
   - `visibility()`, `sites()` and `regions()`: who it is offered to. `Visibility::Private`
     (`common\models\Visibility`) for a module made for one client, offered then only to the sites it names in
     `sites()` by their `uid` and to those it was given, which the people who run the server do; `regions()` the
@@ -230,6 +231,9 @@ The hooks a module here may use:
 - `page.form`, `user.form`, `term.form`: the sections of those forms (see above).
 - `menu.sources`: what an item of a menu may point to, e.g. the pages of its kind.
 - `admin.bar`: the items of the admin bar on the site, given `$view->params['model']`.
+
+The hooks of the shop (a section under a product, a discount, a way of payment, ...) are in `docs/shop.md`, for a
+module of a site that has the shop.
 
 ## The picture and the docs
 
