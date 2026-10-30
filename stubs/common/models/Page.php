@@ -201,8 +201,9 @@ class Page extends SiteRecord
     /**
      * The values of this kind of page that hold the id of a record of the site, and what kind of record each
      * names (`media`, `page`, `menu`, `term` or `user`), by the name of the value: `['image' => 'media',
-     * 'author_id' => 'user']` for a post. A value may hold one id or a list of them. The content of a site
-     * travels with them as references.
+     * 'author_id' => 'user']` for a post. A value may hold one id or a list of them. The content of a site and
+     * the demo of a theme travel with them as references. A picture of the cards of the form (see
+     * {@see formCards()}) is one unless a subclass says otherwise.
      *
      * @return array<string, string>
      */

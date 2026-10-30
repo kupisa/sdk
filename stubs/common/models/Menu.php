@@ -8,6 +8,7 @@ use common\behaviors\MetaBehavior;
 use common\behaviors\TimestampBehavior;
 use common\behaviors\UidBehavior;
 use common\helpers\Hook;
+use themes\Themes;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -48,6 +49,11 @@ class Menu extends SiteRecord
     public const TYPE_URL = 'url';
 
     /**
+     * An item that points to the list of the pages of a kind of page of the theme, named by its type.
+     */
+    public const TYPE_LIST = 'list';
+
+    /**
      * Whether the link of an item opens in a new tab. Kept in the meta.
      */
     public bool $new_tab = false;
@@ -67,9 +73,10 @@ class Menu extends SiteRecord
     }
 
     /**
-     * What the items of a menu may point to, grouped as the menu editor offers them: the pages of the site,
-     * and whatever the enabled modules add through the `menu.sources` hook (the posts and the categories of
-     * the blog, ...). A source is
+     * What the items of a menu may point to, grouped as the menu editor offers them: the pages of the site, the
+     * pages, the terms and the lists of the kinds of pages of the theme (see {@see themeSources()}), and whatever
+     * the enabled modules add through the `menu.sources` hook (the posts and the categories of the blog, ...). A
+     * source is
      *
      * ```php
      * [

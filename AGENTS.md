@@ -62,6 +62,10 @@ For particular sites, make it `Visibility::Private` and name the `uid` of each o
 - A module lives in `modules/<name>/` of this repository, with a `Module` class in it that extends
   `modules\Module`, never `yii\base\Module`: the platform does not load a module that does not. A module for a
   site is made only here, never anywhere else.
+- A kind of page the theme needs (the daily programme of a kindergarten, the menus of a restaurant), with its
+  categories or tags, belongs to the theme itself, in its `models/`, with its list and its page in the views of
+  the theme (see "A kind of page of its own" in `docs/theme.md`); a module is made for it only when the site keeps
+  it whatever its theme.
 - The content of the site lives in `content/` of this repository, as the package `docs/content.md` describes.
 - The namespace of a class is its path from the `sites` directory of the platform, which this repository is
   cloned into. The `AGENTS.md` of this repository names the prefix: with the prefix `sites\acme`, the theme

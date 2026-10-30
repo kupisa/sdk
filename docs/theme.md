@@ -162,6 +162,8 @@ class Program extends Page
   `views/<type>/view.php` a page with `$page` (`frontend\widgets\PageContent::widget(['page' => $page])` for its
   blocks). The title and the breadcrumbs are set already. Without them the site uses those of the platform,
   `frontend/views/page/type-index.php` and `type-view.php`.
+- The menus of the site offer the pages of the kind, its list and the terms of its taxonomies (see below), so a
+  menu item leads there whatever word the site sets for the address.
 - The pages of the kind stay on a site that picks another theme, only they are not shown.
 
 ## Categories and tags of its own
