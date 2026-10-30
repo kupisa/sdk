@@ -12,8 +12,10 @@ use common\helpers\Paths;
 use frontend\blocks\Block;
 use frontend\blocks\BlockGroup;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * A page of the current site, reached on the site under `/<slug>`.
@@ -80,6 +82,87 @@ class Page extends SiteRecord
     }
 
     /**
+     * The name of the pages of this kind together, translated: "Daily programmes". The title of their list on the
+     * site and of their word on the Addresses page; the name of the kind unless a subclass names its own.
+     */
+    public static function labelPlural(): string
+    {
+    }
+
+    /**
+     * The word the addresses of a kind of page of a theme go under on the site (`/programmes`,
+     * `/programmes/<slug>`, see `Theme::pageTypes()`), in English as a key of the translations of the theme,
+     * written as `Yii::t('vrtic', 'programmes', [], 'en')` so `message/extract` keeps its translations: the site
+     * gets it in its language, or as it set it on the Addresses page (see `common\helpers\Paths`). The type
+     * unless a subclass names its own.
+     */
+    public static function path(): string
+    {
+    }
+
+    /**
+     * The cards a kind of page of a theme adds to its form in the administration, under the card of its title,
+     * its address and its content, each with its `label`, its `description` and the `controls` of the values
+     * of the kind it edits, written as those of a block (see `Block::controls()`), each naming a public property:
+     * `text`, `textarea`, `number`, `select` and `choice` (with their `options`), `media` (a picture of the media
+     * library, its id) and `date` (a day as `Y-m-d`), with a `hint` under it when it says one.
+     *
+     * ```php
+     * [
+     *     [
+     *         'label'       => Yii::t('vrtic', 'The day'),
+     *         'description' => Yii::t('vrtic', 'The day the programme is for.'),
+     *         'controls'    => [
+     *             ['name' => 'date', 'type' => 'date', 'label' => Yii::t('vrtic', 'Day')],
+     *         ],
+     *     ],
+     * ]
+     * ```
+     *
+     * A text, a choice and a day are declared as `public string|null $date = null;`, a number and a picture
+     * without a type (`public $photo = null;`), since the form sends them as text. Every value is checked as its
+     * control says (see {@see rules()}), and is null while it is empty.
+     *
+     * @return list<array{label: string, description: string, controls: list<array{name: string, type: string, label: string, hint?: string, options?: list<array{value: string, label: string}>}>}>
+     */
+    public static function formCards(): array
+    {
+    }
+
+    /**
+     * The controls of every card of the form of this kind (see {@see formCards()}), in their order.
+     *
+     * @return list<array{name: string, type: string, label: string, hint?: string, options?: list<array{value: string, label: string}>}>
+     */
+    public static function formControls(): array
+    {
+    }
+
+    /**
+     * The order of the list of the pages of a kind of page of a theme on the site (see `Theme::pageTypes()`), as
+     * in `orderBy()`: a column of the page (`title`, `created`) or a value of the cards of its form (see
+     * {@see formCards()}) by its name, with `SORT_ASC` or `SORT_DESC`. The daily programmes by their day, and
+     * those of one day by their title: `['date' => SORT_ASC, 'title' => SORT_ASC]`. The newest first unless a
+     * subclass says otherwise.
+     *
+     * @return array<string, int>
+     */
+    public static function listOrder(): array
+    {
+    }
+
+    /**
+     * The order of {@see listOrder()} for a query of the pages of the kind: a column as it is, a value of the
+     * cards from the meta, a number as a number (so 9 comes before 10), a page without the value last. Pages in
+     * the same place come the newest first.
+     *
+     * @throws InvalidConfigException when a name is neither a column of the page nor a value of its cards.
+     */
+    public static function listOrderBy(): Expression
+    {
+    }
+
+    /**
      * The capability a user needs to work on pages of this kind (see `common\components\Roles`): `pages` for a
      * plain page; a kind brought by a module names the module.
      */
@@ -138,8 +221,19 @@ class Page extends SiteRecord
     }
 
     /**
+     * The terms of a taxonomy the page is in that are on the site (see `Term::isVisible()`), for a view that
+     * shows them: the categories of a page of a kind of the theme, each a link to its page.
+     *
+     * @param class-string<Term> $taxonomy
+     * @return list<Term>
+     */
+    public function visibleTerms(string $taxonomy): array
+    {
+    }
+
+    /**
      * The kinds of pages of the site, the class of each by its type: the plain page and the kinds the enabled
-     * modules bring (see `modules\Module::pageTypes()`).
+     * modules and the active theme bring (see `modules\Module::pageTypes()` and `themes\Theme::pageTypes()`).
      *
      * @return array<string, class-string<Page>>
      */
@@ -264,7 +358,7 @@ class Page extends SiteRecord
      * The address of the page on the site, e.g. `https://my-shop.kupisa.shop/about-us`. Only a published page
      * answers there. Built from the route by the `frontendUrlManager`, so it follows the URL rules of the site.
      * Null for a kind of page that is not public (see {@see isPublic()}): whatever links to a page leaves such
-     * a page out.
+     * a page out. A kind of page of a theme is under the word of its kind (see `Theme::pageTypes()`).
      */
     public function getUrl(): string|null
     {
@@ -272,11 +366,23 @@ class Page extends SiteRecord
 
     /**
      * Where the page is edited in the administration, as a route: the page editor leads back there. A kind of
-     * page brought by a module names the page of its module.
+     * page brought by a module names the page of its module; one of a theme is edited where a plain page is,
+     * named by its type.
      *
-     * @return array{0: string, id: int}
+     * @return array{0: string, id: int, type?: string}
      */
     public function getEditUrl(): array
+    {
+    }
+
+    /**
+     * The parameter that names a kind of page in the addresses of the pages of the administration, which serve
+     * the plain page and the kinds of a theme (`['type' => 'program']`), none for the plain page; the navigation
+     * tells the kinds apart by it.
+     *
+     * @return array{type?: string}
+     */
+    public static function typeParams(string $type): array
     {
     }
 

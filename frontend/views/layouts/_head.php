@@ -20,8 +20,8 @@ $this->registerMetaTag(
         'content' => 'width=device-width, initial-scale=1',
     ],
 );
-// The icon of the platform, until the site chooses a favicon of its own, which takes its place under the
-// same key (see `frontend\components\Favicon`).
+// The favicon, the sign of Kupiša or the one the site chose (see `frontend\components\Favicon`, which writes it
+// again under the same key with the version of the picture in its address).
 $this->registerLinkTag(
     [
         'rel' => 'icon',

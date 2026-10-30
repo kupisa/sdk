@@ -62,6 +62,14 @@ abstract class TermController extends Controller
     }
 
     /**
+     * A route of the pages of the terms, for their links and redirects: `['update', 'id' => 3]` as it is. The
+     * controller of the taxonomies of a theme adds the taxonomy to it (see `ThemeTermController`).
+     */
+    public function url(array $route): array
+    {
+    }
+
+    /**
      * The view with the fields of the values the kind declares beyond the columns, when the module has one:
      * `_fields.php` in the view directory the controller would have by default.
      */

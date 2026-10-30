@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace themes;
 
+use common\models\Page;
+use common\models\Term;
 use common\models\Visibility;
 use frontend\blocks\Block;
 use modules\Modules;
@@ -30,6 +32,8 @@ use yii\helpers\Markdown;
  * - `blocks/<name>/` also holds the blocks of its own, built like those of the site and added with
  *   {@see blocks()}, and the header or the footer of its own, which replace those of the site with
  *   {@see areas()}.
+ * - `models/` holds the kinds of pages and the taxonomies of its own (see {@see pageTypes()} and
+ *   {@see taxonomies()}), and `views/<type>/` the list and the page of a kind on the site.
  * - `docs/<language>.md` tells what the theme looks like in detail (see {@see details()}), and `messages/`
  *   holds its translations under the name of the theme as the category, e.g. `Yii::t('example', 'Banner')`.
  *
@@ -103,6 +107,36 @@ abstract class Theme
      * @return array<string, class-string<Block>>
      */
     public static function blocks(): array
+    {
+    }
+
+    /**
+     * The kinds of pages the theme brings, the class of each by its type, in the form of `params['pageTypes']`
+     * (see `common\models\Page`), e.g. `['program' => Program::class]` for `models/Program.php`. While the theme
+     * is active, a public kind has its list and its pages on the site under a word of its own (see
+     * `Page::path()` and `common\helpers\Paths`), shown by the views of the theme `views/<type>/index.php` and
+     * `views/<type>/view.php`, or by those of the platform when the theme has none (see
+     * `frontend\controllers\PageController`). The pages of a kind stay on the site when another theme is picked,
+     * only no longer shown.
+     *
+     * @return array<string, class-string<Page>>
+     */
+    public static function pageTypes(): array
+    {
+    }
+
+    /**
+     * The taxonomies the kinds of pages of the theme are put in (see `Page::taxonomies()`), the class of each by
+     * its type, in the form of `params['taxonomies']` (see `common\models\Term`), e.g.
+     * `['vrtic_category' => Category::class]` for `models/Category.php`: the type starts with the name of the
+     * theme, as that of a module starts with the name of the module. While the theme is active, a taxonomy has
+     * its list in the administration under the item of the kinds that name it, and a term of a public taxonomy
+     * its page on the site under the word of the first public kind that names it and the word of the taxonomy
+     * (`/programmes/category/<slug>`, see `Term::path()`), the list of the pages of the kind in the term.
+     *
+     * @return array<string, class-string<Term>>
+     */
+    public static function taxonomies(): array
     {
     }
 

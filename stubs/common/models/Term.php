@@ -7,6 +7,7 @@ namespace common\models;
 use common\behaviors\MetaBehavior;
 use common\behaviors\TimestampBehavior;
 use common\behaviors\UidBehavior;
+use themes\Themes;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveQuery;
@@ -79,9 +80,21 @@ abstract class Term extends SiteRecord
 
     /**
      * The address of the term on the site, built from the URL rules of its module; a taxonomy that is public
-     * gives it. Null for one that is not (see {@see isPublic()}).
+     * gives it. Null for one that is not (see {@see isPublic()}). A taxonomy of a theme has it under the word of
+     * the kind of page it belongs to (see `Themes::kindOf()`) and its own word: `/programmes/category/<slug>`.
      */
     public function getUrl(): string|null
+    {
+    }
+
+    /**
+     * The word the pages of the terms of a taxonomy of a theme go under on the site, after the word of their kind
+     * of page (`category` in `/programmes/category/<slug>`, see `Theme::taxonomies()`), in English as a key of
+     * the translations of the theme, written as `Yii::t('vrtic', 'category', [], 'en')`: the site gets it in its
+     * language, or as it set it on the Addresses page (see `common\helpers\Paths`). The type unless a subclass
+     * names its own.
+     */
+    public static function path(): string
     {
     }
 
